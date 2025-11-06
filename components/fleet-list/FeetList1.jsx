@@ -1,21 +1,23 @@
+// components/FleetList1.jsx (or .tsx)
 "use client";
 import { useEffect, useState } from "react";
-import Pagination from "../common/Pagination";
+import Pagination from "../common/Pagination"; // Assuming this component exists
 import { carBrands, carTypes, cars } from "@/data/cars";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function FeetList1() {
+export default function FleetList1() {
   const [selectedCarTypes, setSelectedCarTypes] = useState("All");
   const [selectedBrand, setSelectedBrand] = useState("All");
   const [selectedCars, setSelectedCars] = useState(cars);
+
   useEffect(() => {
     let items = cars;
-    if (selectedCarTypes != "All") {
-      items = items.filter((elm) => elm.carType == selectedCarTypes);
+    if (selectedCarTypes !== "All") {
+      items = items.filter((car) => car.carType === selectedCarTypes);
     }
-    if (selectedBrand != "All") {
-      items = items.filter((elm) => elm.brand == selectedBrand);
+    if (selectedBrand !== "All") {
+      items = items.filter((car) => car.brand === selectedBrand);
     }
     setSelectedCars(items);
   }, [selectedCarTypes, selectedBrand]);
@@ -44,14 +46,13 @@ export default function FeetList1() {
                 className="dropdown-menu"
                 aria-labelledby="dropdownMenuButton1"
               >
-                {carTypes.map((elm, i) => (
-                  <li key={i} onClick={() => setSelectedCarTypes(elm)}>
+                {carTypes.map((type) => ( // Use 'type' instead of 'elm'
+                  <li key={type} onClick={() => setSelectedCarTypes(type)}>
                     <a
-                      className={`dropdown-item cursor-pointer ${
-                        selectedCarTypes == elm ? "car-filter-active" : ""
-                      }`}
+                      className={`dropdown-item cursor-pointer ${selectedCarTypes === type ? "car-filter-active" : ""
+                        }`}
                     >
-                      {elm}
+                      {type}
                     </a>
                   </li>
                 ))}
@@ -71,14 +72,13 @@ export default function FeetList1() {
                 className="dropdown-menu"
                 aria-labelledby="dropdownMenuButton2"
               >
-                {carBrands.map((elm, i) => (
-                  <li key={i} onClick={() => setSelectedBrand(elm)}>
+                {carBrands.map((brand) => ( // Use 'brand' instead of 'elm'
+                  <li key={brand} onClick={() => setSelectedBrand(brand)}>
                     <a
-                      className={`dropdown-item cursor-pointer ${
-                        selectedBrand == elm ? "car-filter-active" : ""
-                      }`}
+                      className={`dropdown-item cursor-pointer ${selectedBrand === brand ? "car-filter-active" : ""
+                        }`}
                     >
-                      {elm}
+                      {brand}
                     </a>
                   </li>
                 ))}
@@ -87,52 +87,82 @@ export default function FeetList1() {
           </div>
         </div>
         <div className="row mt-30">
-          {selectedCars.slice(0, 6).map((elm, i) => (
-            <div key={i} className="col-lg-4 mb-30">
+          {selectedCars.slice(0, 6).map((car) => ( // Use 'car' instead of 'elm'
+            <div key={car.id} className="col-lg-4 mb-30"> {/* Use car.id for key */}
               <div className="cardFleet wow fadeInUp">
-                <div className="cardInfo">
-                  <Link href={`/fleet-single/${elm.id}`}>
-                    <h3 className="text-20-medium color-text mb-10">
-                      {elm.title}
+                <div className="cardInfo text-center"> {/* Centered info */}
+                  <Link href={`/fleet-single/${car.id}`}>
+                    <h3 className="text-20-medium color-text mb-5"> {/* Reduced margin */}
+                      {car.title}
                     </h3>
+                    <p className="text-14 color-text mb-10 text-truncate"> {/* Truncate description */}
+                      {car.description}
+                    </p>
                   </Link>
-                  <p className="text-14 color-text mb-30">{elm.description}</p>
+                  {/* Added Brand and Price */}
+                  <div className="flex justify-between items-center mb-5">
+                    <span className="text-14-medium color-primary">{car.brand}</span>
+                    <span className="text-16-bold color-text">€{car.price}/hr</span> {/* Example price format */}
+                  </div>
                 </div>
                 <div className="cardImage mb-30">
-                  <Link href={`/fleet-single/${elm.id}`}>
+                  <Link href={`/fleet-single/${car.id}`}>
                     <Image
                       width={1530}
                       height={711}
-                      style={{ height: "fit-content" }}
-                      src={elm.imgSrc}
-                      alt="Luxride"
+                      style={{ height: "fit-content", objectFit: "cover" }} // Ensure image fits nicely
+                      src={car.imgSrc}
+                      alt={`${car.title} - Malik`} // Improved alt text
                     />
                   </Link>
                 </div>
-                <div className="cardInfoBottom">
-                  <div className="passenger">
-                    <span className="icon-circle icon-passenger"></span>
-                    <span className="text-14">
-                      Passengers<span>{elm.passenger}</span>
+
+                <div className="cardInfoBottom grid grid-cols-2 gap-4 border-t pt-15">
+                  <div className="info-item text-center">
+                    <span className="icon-circle icon-passenger block mx-auto mb-2">
+                      {/* Uses existing CSS class */}
+                    </span>
+                    <span className="text-14 block">
+                      Passengers <span className="block text-16-medium color-text">{car.passenger}</span>
                     </span>
                   </div>
-                  <div className="luggage">
-                    <span className="icon-circle icon-luggage"></span>
-                    <span className="text-14">
-                      Luggage<span>{elm.luggage}</span>
+                  <div className="info-item text-center">
+                    <span className="icon-circle icon-luggage block mx-auto mb-2">
+                      {/* Uses existing CSS class */}
+                    </span>
+                    <span className="text-14 block">
+                      Luggage <span className="block text-16-medium color-text">{car.luggage}</span>
+                    </span>
+                  </div>
+                  <div className="info-item text-center">
+                    <span className="icon-circle icon-fuel block mx-auto mb-2">
+                      {/* Uses existing CSS class */}
+                    </span>
+                    <span className="text-14 block">
+                      Fuel <span className="block text-16-medium color-text">{car.fuelType}</span>
+                    </span>
+                  </div>
+                  <div className="info-item text-center">
+                    <span className="icon-circle icon-type block mx-auto mb-2">
+                      {/* Uses existing CSS class */}
+                    </span>
+                    <span className="text-14 block">
+                      Type <span className="block text-16-medium color-text">{car.carType}</span>
                     </span>
                   </div>
                 </div>
+
               </div>
             </div>
           ))}
-          {!selectedCars.length && <div>No item found. Try another filter</div>}
+          {selectedCars.length === 0 && ( // Improved conditional check
+            <div className="col-12 text-center"> {/* Centered message */}
+              <p className="text-18-medium color-text">No items found. Try another filter.</p>
+            </div>
+          )}
         </div>
-        <div className="text-center mt-40 mb-120">
-          <nav className="box-pagination">
-            <Pagination />
-          </nav>
-        </div>
+        {/* Optionally add Pagination component here if you want to show more than 6 cars */}
+        {/* <Pagination /> */}
       </div>
     </section>
   );

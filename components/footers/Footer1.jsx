@@ -1,13 +1,43 @@
-import {
-  legalLinks,
-  links1,
-  links2,
-  links3,
-  links4,
-  socialMediaPlatforms,
-} from "@/data/footerLinks";
-import Image from "next/image";
 import Link from "next/link";
+
+
+export const links1 = [
+  { id: 1, text: "About us", href: "/about" },
+  { id: 2, text: "Our Fleet", href: "/fleet-list" },
+  { id: 4, text: "Our Team", href: "/our-team" },
+  { id: 5, text: "Contact", href: "/contact" },
+];
+
+export const links2 = [
+  { id: 1, name: "Barcelona", href: "/booking-vehicle?from=Barcelona" },
+  { id: 2, name: "Tarragona", href: "/booking-vehicle?from=Tarragona" },
+  { id: 3, name: "Lleida", href: "/booking-vehicle?from=Lleida" },
+  { id: 4, name: "Girona", href: "/booking-vehicle?from=Girona" },
+];
+
+export const links3 = [
+  { id: 1, name: "Airport Transfers", href: "/booking-vehicle?type=airport" },
+  { id: 2, name: "City Rides", href: "/booking-vehicle?type=city" },
+  { id: 3, name: "Chauffeur Service", href: "/booking-vehicle?type=chauffeur" },
+  { id: 4, name: "Corporate Travel", href: "/booking-vehicle?type=corporate" },
+  { id: 5, name: "Special Occasions", href: "/booking-vehicle?type=occasion" },
+];
+
+export const links4 = [
+  { id: 1, name: "Mercedes Vito", href: "/fleet-list?category=vito" },
+  { id: 2, name: "Mercedes V-Class", href: "/fleet-list?category=v-class" },
+  { id: 3, name: "Mercedes E-Class", href: "/fleet-list?category=e-class" },
+  { id: 4, name: "Toyota", href: "/fleet-list?category=toyota" },
+  { id: 5, name: "Lexus", href: "/fleet-list?category=lexus" },
+  { id: 6, name: "Tesla", href: "/fleet-list?category=tesla" },
+];
+
+export const legalLinks = [
+  { id: 1, name: "Terms of Service", href: "/page/terms" },
+  { id: 2, name: "Privacy Policy", href: "/page/privacy" },
+  { id: 3, name: "Cancellation Policy", href: "/page/cancellation" },
+  { id: 4, name: "Cookie Policy", href: "/page/cookies" },
+];
 
 export default function Footer1() {
   return (
@@ -25,16 +55,6 @@ export default function Footer1() {
                   >
                     +34 612 47 23 29
                   </a>
-                </div>
-              </div>
-              <div className="col-lg-6 col-md-6 text-md-end text-center mb-15 wow fadeInUp">
-                <div className="d-flex align-items-center justify-content-md-end justify-content-center">
-                  <span className="text-18-medium color-white mr-10">
-                    Follow Us
-                  </span>
-                  {socialMediaPlatforms.map((elm, i) => (
-                    <a key={i} className={elm.className} href={elm.href}></a>
-                  ))}
                 </div>
               </div>
             </div>
@@ -66,7 +86,7 @@ export default function Footer1() {
             </div>
             <div className="col-lg-3 width-20 mb-30">
               <h5 className="text-18-medium color-white mb-20 wow fadeInUp">
-                Explore
+                Services
               </h5>
               <ul className="menu-footer wow fadeInUp">
                 {links3.map((elm, i) => (
@@ -78,7 +98,7 @@ export default function Footer1() {
             </div>
             <div className="col-lg-3 width-20 mb-30">
               <h5 className="text-18-medium color-white mb-20 wow fadeInUp">
-                Classes
+                Cars
               </h5>
               <ul className="menu-footer wow fadeInUp">
                 {links4.map((elm, i) => (

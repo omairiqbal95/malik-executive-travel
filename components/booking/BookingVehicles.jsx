@@ -39,11 +39,6 @@ export default function BookingVehicles() {
                       Safe and secure travel
                     </div>
                   </div>
-                  <div className="mt-10">
-                    <Link className="link text-14-medium" href="/booking-extra">
-                      Show more information
-                    </Link>
-                  </div>
                 </div>
                 <div className="vehicle-right">
                   <h5 className="text-20-medium color-text mb-10">
@@ -51,10 +46,8 @@ export default function BookingVehicles() {
                   </h5>
                   <p className="text-14 color-text mb-20">{elm.description}</p>
                   <div className="vehicle-passenger-luggage mb-10">
-                    <span className="passenger">
-                      Passengers {elm.passenger}
-                    </span>
-                    <span className="luggage">Luggage {elm.luggage}</span>
+                    <span className="passenger">{elm.passenger}</span>
+                    <span className="luggage">{elm.luggage}</span>
                   </div>
                   <div className="vehicle-price">
                     <h4 className="heading-30-medium color-text">
@@ -62,7 +55,7 @@ export default function BookingVehicles() {
                     </h4>
                   </div>
                   <div className="price-desc mb-20">
-                    All prices include VAT, fees &amp; tip.
+                    All prices include IVA, fees &amp; tip.
                   </div>
                   <Link className="btn btn-primary w-100" href="/booking-extra">
                     Select
@@ -104,12 +97,14 @@ export default function BookingVehicles() {
               <li>
                 <span className="location-item">A </span>
                 <span className="info-location text-14-medium">
-                  Barcelona El prat 
+                  Barcelona El Prat Airport (BCN)
                 </span>
               </li>
               <li>
                 <span className="location-item">B </span>
-                <span className="info-location text-14-medium">Hotel Arts</span>
+                <span className="info-location text-14-medium">
+                  Hotel Arts Barcelona
+                </span>
               </li>
             </ul>
           </div>
@@ -123,15 +118,17 @@ export default function BookingVehicles() {
               </li>
               <li>
                 <span className="icon-item icon-time"></span>
-                <span className="info-location text-14-medium">6:15 PM</span>
+                <span className="info-location text-14-medium">
+                  6:15 PM
+                </span>
               </li>
             </ul>
           </div>
           <div className="mt-20 wow fadeInUp">
             <div className="box-map-route">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d...!2d2.1590!3d41.3888!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x…0:0x…!2sBarcelona,%20Spain!5e0!3m2!1sen!2s!4v1679223612023!5m2!1sen!2s"
-                style={{ border: "0px" }}
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11905.58370691577!2d2.158990777158385!3d41.39020507926246!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4a2f75b4dcac9%3A0x24639460200ac820!2sBarcelona%2C%20Spain!5e0!3m2!1sen!2s!4v1730818900000!5m2!1sen!2s"
+                style={{ border: "0px", width: "100%", height: "200px" }}
                 allowFullScreen=""
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
@@ -139,23 +136,25 @@ export default function BookingVehicles() {
             </div>
             <div className="box-info-route">
               <div className="info-route-left">
-                <span className="text-14 color-grey">Total Distance</span>
+                <span className="text-14 color-grey">Estimated Distance</span>
                 <span className="text-14-medium color-text">
-                  311 km/ 194 miles
+                  ~15 km
                 </span>
               </div>
               <div className="info-route-left">
-                <span className="text-14 color-grey">Total Time</span>
-                <span className="text-14-medium color-text">3h 43m</span>
+                <span className="text-14 color-grey">Estimated Time</span>
+                <span className="text-14-medium color-text">
+                  ~25 mins
+                </span>
               </div>
             </div>
           </div>
         </div>
         <div className="sidebar wow fadeInUp">
           <ul className="list-ticks list-ticks-small list-ticks-small-booking">
-            {features.map((elm, i) => (
-              <li key={i} className="text-14 mb-20">
-                {elm}
+            {features.map((feature, index) => (
+              <li key={index} className="text-14 mb-20">
+                {feature}
               </li>
             ))}
           </ul>

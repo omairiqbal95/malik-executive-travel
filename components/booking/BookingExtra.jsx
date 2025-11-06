@@ -1,85 +1,53 @@
+
+// components/BookingExtra.jsx (or .tsx)
 "use client";
 import { useEffect, useState } from "react";
 import SideBar from "./SideBar";
 import { activeInputFocus } from "@/utlis/activeInputFocus";
 import Link from "next/link";
-const quantityItem = [
-  {
-    id: 1,
-    name: "Child Seat",
-    price: 12,
-    description:
-      "Suitable for toddlers weighing 0-18 kg (approx 0 to 4 years).",
-    quantity: 1,
-  },
-  {
-    id: 2,
-    name: "Booster seat",
-    price: 12,
-    description:
-      "Suitable for children weighing 15-36 kg (approx 4 to 10 years).",
-    quantity: 1,
-  },
-  {
-    id: 3,
-    name: "Vodka Bottle",
-    price: 12,
-    description: "Absolut Vodka 0.7l Bottle",
-    quantity: 1,
-  },
-  {
-    id: 4,
-    name: "Bouquet of Flowers",
-    price: 12,
-    description: "A bouquet of seasonal flowers prepared by a local florist",
-    quantity: 1,
-  },
-];
-const selectItem = [
-  {
-    id: 5,
-    name: "Alcohol Package",
-    price: 12,
-    description: "A bouquet of seasonal flowers prepared by a local florist",
-  },
-  {
-    id: 6,
-    name: "Airport Assistance and Hostess Service",
-    price: 12,
-    description: "A bouquet of seasonal flowers prepared by a local florist",
-  },
-  {
-    id: 7,
-    name: "Bodyguard Service",
-    price: 12,
-    description: "A bouquet of seasonal flowers prepared by a local florist",
-  },
-];
+import { extras } from "@/data/cars"; // Import the extras array
+
 export default function BookingExtra() {
-  const [quantityItems, setquantityItems] = useState(quantityItem);
-  const [selectItems, setSelectItems] = useState(selectItem);
-  const handleQuantity = (qty, i) => {
-    const items = [...quantityItems];
-    const item = items[i];
-    if (qty / 1) {
-      item.quantity = qty;
-      items[i] = item;
-      setquantityItems(items);
+  // Initialize state with the imported extras array
+  const [extraItems, setExtraItems] = useState(() =>
+    extras.map(item => ({
+      ...item,
+      // Add a quantity field for items that should have one (e.g., seats, flowers)
+      // Assuming items needing quantity are those with IDs 1, 2, 4 based on previous structure
+      // A more robust way would be to add a 'type' field to the data (e.g., 'quantity', 'select')
+      quantity: [1, 2, 4].includes(item.id) ? 1 : undefined, // Default quantity to 1 for relevant items, undefined otherwise
+      selected: [6].includes(item.id) // Default selected state for items needing selection (e.g., ID 6)
+    }))
+  );
+
+  // Handle quantity changes for items that have a quantity input
+  const handleQuantityChange = (id, newQty) => {
+    if (newQty >= 0) { // Allow 0 quantity
+      setExtraItems(prevItems =>
+        prevItems.map(item =>
+          item.id === id ? { ...item, quantity: newQty } : item
+        )
+      );
     }
   };
-  const handleSelect = (i) => {
-    const items = [...selectItems];
-    const item = items[i];
-    if (!item.selected) {
-      item.selected = true;
-      items[i] = item;
-      setSelectItems(items);
-    }
+
+  // Handle selection for items that have a select button
+  const handleSelectToggle = (id) => {
+    setExtraItems(prevItems =>
+      prevItems.map(item =>
+        item.id === id ? { ...item, selected: !item.selected } : item
+      )
+    );
   };
+
   useEffect(() => {
     // Focus event
     activeInputFocus();
   }, []);
+
+  // Separate items that need quantity input from those that need selection
+  const quantityItems = extraItems.filter(item => item.quantity !== undefined);
+  const selectItems = extraItems.filter(item => item.selected !== undefined);
 
   return (
     <div className="box-row-tab mt-50">
@@ -100,7 +68,7 @@ export default function BookingExtra() {
                       className="form-control"
                       id="flight"
                       type="text"
-                      defaultValue="Example : LH83822"
+                      defaultValue="LH83822"
                     />
                   </div>
                 </div>
@@ -108,64 +76,32 @@ export default function BookingExtra() {
             </form>
           </div>
           <div className="list-extras wow fadeInUp">
-            {quantityItems.map((elm, i) => (
-              <div key={i} className="item-extra">
+            {/* Render items that have a quantity input */}
+            {quantityItems.map((elm) => (
+              <div key={elm.id} className="item-extra"> {/* Use elm.id for key */}
                 <div className="extra-info">
                   <h5 className="text-20-medium color-text mb-5">
-                    {elm.name} <span className="price">€{elm.price}</span>
+                    {elm.title} <span className="price">€{elm.price}</span> {/* Use elm.title */}
                   </h5>
-                  <p className="text-14 color-grey">{elm.description}</p>
+                  <p className="text-14 color-grey">{elm.description}</p> {/* Use elm.description */}
                 </div>
                 <div className="extra-quantity">
                   <span
-                    onClick={() => handleQuantity(elm.quantity - 1, i)}
+                    onClick={() => handleQuantityChange(elm.id, elm.quantity - 1)}
                     className="minus"
                   >
                     {" "}
                   </span>
                   <input
                     className="form-control"
-                    onChange={(e) => handleQuantity(e.target.value, i)}
+                    onChange={(e) => handleQuantityChange(elm.id, parseInt(e.target.value) || 0)}
                     type="text"
                     value={elm.quantity}
                   />
                   <span
-                    onClick={() => handleQuantity(elm.quantity + 1, i)}
+                    onClick={() => handleQuantityChange(elm.id, elm.quantity + 1)}
                     className="plus"
                   ></span>
-                </div>
-              </div>
-            ))}
-            {selectItems.map((elm, i) => (
-              <div key={i} className="item-extra">
-                <div className="extra-info">
-                  <h5 className="text-20-medium color-text mb-5">
-                    {elm.name} <span className="price">€{elm.price}</span>
-                  </h5>
-                  <p className="text-14 color-grey">{elm.description}</p>
-                </div>
-                <div className="extra-quantity">
-                  <a
-                    onClick={() => handleSelect(i)}
-                    className="btn btn-grey w-100"
-                  >
-                    {elm.selected ? "Selected" : "Select"}
-                    <svg
-                      className="icon-16 ml-5"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
-                      ></path>
-                    </svg>
-                  </a>
                 </div>
               </div>
             ))}
@@ -180,7 +116,7 @@ export default function BookingExtra() {
                         Notes for the chauffeur
                       </label>
                       <textarea
-                        defaultValue={`There are many variations of passages of Lorem Ipsum available.`}
+                        defaultValue={``}
                         className="form-control"
                         id="notes"
                         rows="5"
@@ -194,7 +130,7 @@ export default function BookingExtra() {
           <div className="mt-30 mb-120 wow fadeInUp">
             <Link
               className="btn btn-primary btn-primary-big w-100"
-              href="/booking-passenger"
+              href="/booking-passenger" // Adjust link as needed
             >
               Continue
               <svg

@@ -1,9 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import Nav from "./components/Nav";
-import Image from "next/image";
-
-import Link from "next/link";
 import Language from "./components/Language";
 
 export default function Header1() {
@@ -20,7 +17,6 @@ export default function Header1() {
 
     window.addEventListener("scroll", handleScroll);
 
-    // Clean up the event listener when component unmounts
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -53,16 +49,6 @@ export default function Header1() {
               </div>
               <div className="d-none d-xxl-inline-block box-dropdown-cart align-middle mr-10">
                 <Language />
-              </div>
-              <div className="box-button-login d-inline-block mr-10 align-middle">
-                <Link className="btn btn-default hover-up" href="/login">
-                  Log In
-                </Link>
-              </div>
-              <div className="box-button-login d-none2 d-inline-block align-middle">
-                <Link className="btn btn-white hover-up" href="/register">
-                  Sign Up
-                </Link>
               </div>
             </div>
           </div>

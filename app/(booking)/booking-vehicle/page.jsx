@@ -1,8 +1,10 @@
+// app/(booking)/booking-vehicle/page.js (or your specific file path)
 import BookingTab from "@/components/booking/BookingTab";
 import BookingVehicles from "@/components/booking/BookingVehicles";
 import Footer1 from "@/components/footers/Footer1";
 import Header1 from "@/components/headers/Header1";
 import MobileHeader1 from "@/components/headers/MobailHeader1";
+import { BookingProvider } from "@/context/BookingContext"; // Import the provider
 
 export const metadata = {
   title:
@@ -13,17 +15,19 @@ export const metadata = {
 
 export default function page() {
   return (
-    <>
-      <Header1 /> <MobileHeader1 />
-      <main className="main">
-        <section className="section">
-          <div className="container-sub">
-            <BookingTab />
-            <BookingVehicles />
-          </div>
-        </section>
-      </main>
-      <Footer1 />
-    </>
+    <BookingProvider> {/* Wrap the main booking content area with BookingProvider */}
+      <>
+        <Header1 /> <MobileHeader1 />
+        <main className="main">
+          <section className="section">
+            <div className="container-sub">
+              <BookingTab />
+              <BookingVehicles />
+            </div>
+          </section>
+        </main>
+        <Footer1 />
+      </>
+    </BookingProvider>
   );
 }

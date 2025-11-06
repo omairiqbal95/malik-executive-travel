@@ -1,3 +1,4 @@
+// components/PassengerDetails.jsx (or .tsx)
 "use client";
 import React, { useEffect } from "react";
 import SideBar from "./SideBar";
@@ -45,6 +46,13 @@ export default function PassengerDetails() {
         }
       });
   }, []);
+
+  // Example: Pre-populate passenger/luggage counts based on selected car from previous step
+  // This would require state management across pages, e.g., using Context API or passing props
+  // For now, using placeholder logic or defaulting to empty
+  const initialPassengerCount = 1; // e.g., from context or props
+  const initialLuggageCount = 1; // e.g., from context or props
+
   return (
     <div className="box-row-tab mt-50">
       <div className="box-tab-left">
@@ -58,52 +66,56 @@ export default function PassengerDetails() {
                 <div className="col-lg-6">
                   <div className="form-group">
                     <label className="form-label" htmlFor="fullname">
-                      Name
+                      First Name *
                     </label>
                     <input
                       className="form-control"
                       id="fullname"
                       type="text"
                       defaultValue=""
+                      required // Added required for validation
                     />
                   </div>
                 </div>
                 <div className="col-lg-6">
                   <div className="form-group">
                     <label className="form-label" htmlFor="lastname">
-                      Last Name
+                      Last Name *
                     </label>
                     <input
                       className="form-control"
                       id="lastname"
                       type="text"
                       defaultValue=""
+                      required // Added required for validation
                     />
                   </div>
                 </div>
                 <div className="col-lg-6">
                   <div className="form-group">
                     <label className="form-label" htmlFor="email">
-                      Email Address
+                      Email Address *
                     </label>
                     <input
                       className="form-control"
                       id="email"
-                      type="text"
-                      defaultValue="email"
+                      type="email" // Changed to email type for better validation
+                      defaultValue=""
+                      required // Added required for validation
                     />
                   </div>
                 </div>
                 <div className="col-lg-6">
                   <div className="form-group">
                     <label className="form-label" htmlFor="phone">
-                      Phone Number
+                      Phone Number *
                     </label>
                     <input
                       className="form-control"
                       id="phone"
-                      type="text"
-                      defaultValue="Phone"
+                      type="tel" // Changed to tel type for phone numbers
+                      defaultValue=""
+                      required // Added required for validation
                     />
                   </div>
                 </div>
@@ -112,7 +124,7 @@ export default function PassengerDetails() {
           </div>
           <div className="mt-30"></div>
           <h3 className="heading-24-medium color-text mb-30 wow fadeInUp">
-            Options
+            Travel Details
           </h3>
           <div className="form-contact form-comment wow fadeInUp">
             <form onSubmit={(e) => e.preventDefault()}>
@@ -120,55 +132,46 @@ export default function PassengerDetails() {
                 <div className="col-lg-6">
                   <div className="form-group">
                     <label className="form-label" htmlFor="passengers">
-                      Passengers
+                      Number of Passengers *
                     </label>
-                    <select className="form-control" id="passengers">
-                      <option value=""></option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
+                    <select
+                      className="form-control"
+                      id="passengers"
+                      defaultValue={initialPassengerCount} // Use initial value
+                      required // Added required for validation
+                    >
+                      {/* Dynamically generate options based on selected car capacity if available */}
+                      {/* For now, using a reasonable range */}
+                      {[...Array(8)].map((_, i) => (
+                        <option key={i + 1} value={i + 1}>
+                          {i + 1}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
                 <div className="col-lg-6">
                   <div className="form-group">
                     <label className="form-label" htmlFor="luggage">
-                      Luggage
+                      Number of Luggage Pieces *
                     </label>
-                    <select className="form-control" id="luggage">
-                      <option value=""></option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
+                    <select
+                      className="form-control"
+                      id="luggage"
+                      defaultValue={initialLuggageCount} // Use initial value
+                      required // Added required for validation
+                    >
+                      {/* Dynamically generate options based on selected car capacity if available */}
+                      {/* For now, using a reasonable range */}
+                      {[...Array(10)].map((_, i) => (
+                        <option key={i + 1} value={i + 1}>
+                          {i + 1}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
-                <div className="col-lg-12">
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="notes">
-                      Notes to driver
-                    </label>
-                    <textarea
-                      className="form-control"
-                      id="notes"
-                      rows="5"
-                    ></textarea>
-                  </div>
-                </div>
+                {/* Removed the Notes for the Driver section */}
               </div>
             </form>
           </div>
@@ -177,7 +180,7 @@ export default function PassengerDetails() {
               className="btn btn-primary btn-primary-big w-100"
               href="/booking-payment"
             >
-              Continue
+              Continue to Payment
               <svg
                 className="icon-16 ml-5"
                 fill="none"

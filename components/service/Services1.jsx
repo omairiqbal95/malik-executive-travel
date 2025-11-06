@@ -55,11 +55,6 @@ export default function Services1() {
             </div>
           ))}
         </div>
-        <div className="text-center mt-40 mb-120 wow fadeInUp">
-          <nav className="box-pagination">
-            <Pagination />
-          </nav>
-        </div>
       </div>
     </section>
   );

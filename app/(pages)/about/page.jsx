@@ -1,38 +1,24 @@
 import Footer1 from "@/components/footers/Footer1";
 import Header1 from "@/components/headers/Header1";
-import Partners from "@/components/common/partners/Partners";
-import Process from "@/components/common/process/Process";
-import Facts from "@/components/common/facts/Facts";
-import Features2 from "@/components/common/features/Features";
-import Testimonials from "@/components/common/testimonials/Testimonials";
-import DownloadApp from "@/components/common/downloadApp/DownloadApp";
 import Banner from "@/components/otherPages/about/Banner";
 import Breadcumb from "@/components/otherPages/about/Breadcumb";
 import Faq from "@/components/otherPages/about/Faq";
-import Features from "@/components/otherPages/about/Features";
-import MobileHeader1 from "@/components/headers/MobailHeader1";
+import AboutSection from "@/components/otherPages/about/Features";
 
 export const metadata = {
-  title:
-    "About || Lixride Chauffeur Limousine Transport and Car Hire Nextjs Template",
-  description:
-    "Lixride Chauffeur Limousine Transport and Car Hire Nextjs Template",
+  title: "About Us || Malik Executive Travel - Premium Barcelona Transport",
+  description: "Learn more about Malik Executive Travel, your trusted partner for premium chauffeur-driven services in Barcelona.",
 };
-export default function page() {
+
+export default function AboutPage() {
   return (
     <>
-      <Header1 /> <MobileHeader1 />
+      <Header1 />
       <main className="main">
         <Breadcumb />
         <Banner />
-        <Features />
-        <Facts />
-        <Features2 />
-        <Process />
-        <Testimonials />
-        <Partners />
+        <AboutSection />
         <Faq />
-        <DownloadApp />
       </main>
       <Footer1 />
     </>

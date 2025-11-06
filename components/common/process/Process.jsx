@@ -1,8 +1,31 @@
+// components/Process.jsx
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
-import { process } from "@/data/process";
 import Image from "next/image";
+
+// Define process data directly within the component file
+const process = [
+  {
+    id: 1,
+    title: "Book Instantly",
+    description: "Easily enter your pickup and dropoff locations in Barcelona or book for a specific duration via our website or app.",
+    img: "/assets/imgs/page/homepage1/laptop.png", // Or a relevant booking icon/image
+  },
+  {
+    id: 2,
+    title: "Select Your Vehicle",
+    description: "Choose from our diverse fleet, including luxury sedans, spacious vans (up to 8-seater), and eco-friendly options.",
+    img: "/assets/imgs/page/homepage1/desktop.png", // Or a relevant vehicle selection icon/image
+  },
+  {
+    id: 3,
+    title: "Relax & Arrive Safely",
+    description: "Enjoy a comfortable, punctual journey with our professional drivers across Barcelona and beyond.",
+    img: "/assets/imgs/page/homepage1/desktop2.png", // Or a relevant journey/arrival icon/image
+  },
+];
+
 function PrevArrow() {
   return (
     <button type="button" className="slick-prev">
@@ -48,13 +71,18 @@ function NextArrow() {
 export default function Process() {
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
-  let sliderRef1 = useRef(null);
-  let sliderRef2 = useRef(null);
+  const sliderRef1 = useRef(null); // Use 'const' for refs
+  const sliderRef2 = useRef(null); // Use 'const' for refs
 
   useEffect(() => {
-    setNav1(sliderRef1);
-    setNav2(sliderRef2);
-  }, []);
+    // Update state with the actual slider instances after they are rendered
+    if (sliderRef1.current && sliderRef2.current) {
+      setNav1(sliderRef1.current);
+      setNav2(sliderRef2.current);
+    }
+    // Run this effect only once after initial render, or whenever the refs change
+    // (though refs usually don't change after initial render)
+  }, []); // Empty dependency array ensures it runs once after mount
 
   const options = {
     slidesToShow: 1,
@@ -63,13 +91,13 @@ export default function Process() {
     infinite: 0,
     fade: false,
     draggable: false,
-
-    // asNavFor: ".slider-nav-thumbnails"
+    // asNavFor: nav2, // Set this directly in the Slider component props below
   };
+
   const options2 = {
     slidesToShow: 3,
     slidesToScroll: 1,
-    asNavFor: sliderRef1.current,
+    // asNavFor: nav1, // Set this directly in the Slider component props below
     dots: false,
     arrows: false,
     focusOnSelect: true,
@@ -78,6 +106,7 @@ export default function Process() {
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
   };
+
   return (
     <section className="section pt-120 pb-20 bg-primary bg-how-it-works">
       <div className="container-sub">
@@ -89,13 +118,13 @@ export default function Process() {
             <div className="box-main-slider">
               <div className="detail-gallery wow fadeInUp">
                 <Slider
-                  asNavFor={nav2}
-                  ref={(slider) => (sliderRef1 = slider)}
+                  asNavFor={nav2} // Use the state variable directly
+                  ref={sliderRef1} // Assign the ref
                   {...options}
                   className="main-image-slider"
                 >
-                  {process.map((elm, i) => (
-                    <figure key={i}>
+                  {process.map((elm) => ( // Use elm.id for key
+                    <figure key={elm.id}>
                       <Image
                         width={1041}
                         height={689}
@@ -112,14 +141,14 @@ export default function Process() {
           <div className="col-lg-6 order-lg-first justify-content-between position-z3 wow fadeInUp">
             <Slider
               {...options2}
-              asNavFor={nav1}
-              ref={(slider) => (sliderRef2 = slider)}
+              asNavFor={nav1} // Use the state variable directly
+              ref={sliderRef2} // Assign the ref
               className="slider-nav-thumbnails list-how"
             >
-              {process.map((elm, i) => (
-                <li key={i}>
+              {process.map((elm) => ( // Use elm.id for key
+                <li key={elm.id}>
                   <span className="line-white"></span>
-                  <h4 className="text-20-medium mb-20">{elm.title}</h4>
+                  <h4 className="text-20-medium mb-20">{elm.title}</h4> {/* Ensure title is rendered */}
                   <p className="text-16">{elm.description}</p>
                 </li>
               ))}

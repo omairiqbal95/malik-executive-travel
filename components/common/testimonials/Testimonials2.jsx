@@ -64,10 +64,6 @@ export default function Testimonials() {
             </div>
             <div className="col-lg-7 col-md-6 mb-30 text-lg-end text-center d-none d-md-block">
               <div className="box-video wow fadeInUp">
-                <a
-                  className="btn btn-play popup-youtube hover-up"
-                  onClick={() => setIsOpen(true)}
-                ></a>
                 <Image
                   width={370}
                   height={390}
@@ -79,13 +75,6 @@ export default function Testimonials() {
           </div>
         </div>
       </section>
-      <ModalVideo
-        channel="youtube"
-        youtube={{ mute: 0, autoplay: 0 }}
-        isOpen={isOpen}
-        videoId="sVPYIRF9RCQ"
-        onClose={() => setIsOpen(false)}
-      />
     </>
   );
 }

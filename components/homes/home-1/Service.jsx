@@ -1,6 +1,46 @@
 "use client";
 
-import { services } from "@/data/services";
+// Services for Homepage 1 (Main Services)
+export const services = [
+  {
+    id: 1,
+    title: "Barcelona City Rides",
+    description: "Explore the city comfortably with our reliable and punctual service within Barcelona.",
+    image: "/assets/imgs/page/homepage1/service1.png", // Consider updating image if needed
+  },
+  {
+    id: 2,
+    title: "Chauffeur Service",
+    description: "Professional, knowledgeable drivers for a stress-free and informative journey around Barcelona.",
+    image: "/assets/imgs/page/homepage1/service2.png", // Consider updating image if needed
+  },
+  {
+    id: 3,
+    title: "Airport Transfers",
+    description: "Seamless pickups and drop-offs to and from Barcelona El Prat Airport (BCN).",
+    image: "/assets/imgs/page/homepage1/service3.png", // Consider updating image if needed
+  },
+  {
+    id: 4,
+    title: "Group Travel (8-seater)",
+    description: "Spacious Mercedes Vito options for larger groups exploring Barcelona and surroundings.",
+    image: "/assets/imgs/page/homepage1/service5.png", // Consider updating image if needed
+  },
+  {
+    id: 5,
+    title: "Special Occasions",
+    description: "Make your event memorable with our elegant and reliable transport for weddings, parties, etc.",
+    image: "/assets/imgs/page/services/wedding.png", // Consider updating image if needed
+  },
+  {
+    id: 6,
+    title: "Day Trips & Tours",
+    description: "Convenient travel to nearby destinations like Sitges, Girona, or Montserrat.",
+    image: "/assets/imgs/page/services/travel.png", // Consider updating image if needed
+  },
+];
+
+
 import { addLeftPaddingSwiper } from "@/utlis/addSwiperPadding";
 import Image from "next/image";
 import Link from "next/link";
