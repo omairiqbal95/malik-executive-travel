@@ -3,14 +3,16 @@ import { locations } from "@/data/locations";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-export default function PlacePicker() {
-  const [inputValue, setInputValue] = useState(""); // Changed from selectedLocation to inputValue
+export default function PlacePicker({ value, onChange }) {
+  const [inputValue, setInputValue] = useState(value || "");
   const [isActive, setIsActive] = useState(false);
-  const [filteredLocations, setFilteredLocations] = useState(locations); // For filtered list
-  const [selectedLocation, setSelectedLocation] = useState(locations[0].placeName); // Keep track of selected from list
-  const inputRef = useRef(null); // Use null for initial value
+  const [filteredLocations, setFilteredLocations] = useState(locations);
+  const inputRef = useRef(null);
 
-  // Filter locations based on input value
+  useEffect(() => {
+    setInputValue(value || "");
+  }, [value]);
+
   useEffect(() => {
     if (inputValue.trim() === "") {
       setFilteredLocations(locations);
@@ -25,7 +27,6 @@ export default function PlacePicker() {
     }
   }, [inputValue]);
 
-  // Handle clicks outside the input/dropdown to close it
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
@@ -40,81 +41,64 @@ export default function PlacePicker() {
   }, []);
 
   const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-    setIsActive(true); // Open dropdown when user starts typing
+    const newValue = e.target.value;
+    setInputValue(newValue);
+    setIsActive(true);
   };
 
   const handleSelectFromList = (locationName) => {
-    setInputValue(locationName); // Set input to the selected name
-    setSelectedLocation(locationName); // Update selected state
-    setIsActive(false); // Close dropdown
+    setInputValue(locationName);
+    onChange(locationName);
+    setIsActive(false);
   };
 
   const handleInputBlur = () => {
-    // If the user types something that doesn't match a list item,
-    // you might want to save that as the selected location.
-    // For now, let's just close the dropdown if it doesn't match exactly.
-    // Or, you could set the selectedLocation to the inputValue if it's not in the list.
-    // Option 1: Only keep it if it matches a list item
-    // const matchedLocation = locations.find(loc => loc.placeName === inputValue);
-    // if (matchedLocation) {
-    //   setSelectedLocation(matchedLocation.placeName);
-    // } else {
-    //   // Optionally reset to the last selected from list or clear it
-    //   setInputValue(selectedLocation); // Or setInputValue('') to clear
-    // }
-
-    // Option 2: Allow any input value to be the selected location
     if (inputValue.trim() !== "") {
-      setSelectedLocation(inputValue); // Save whatever the user typed as the selected value
-    } else {
-      // If input is empty on blur, maybe revert to the last selected from the list or a default
-      setInputValue(selectedLocation);
+      onChange(inputValue);
     }
-    setIsActive(false); // Close dropdown on blur
+    setIsActive(false);
   };
 
   const handleInputFocus = () => {
-    setIsActive(true); // Open dropdown when input is focused
+    setIsActive(true);
   };
 
   return (
-    <div className="relative" ref={inputRef}> {/* Wrapper for positioning */}
+    <div className="relative" ref={inputRef}>
       <input
-        ref={inputRef}
         className="search-input dropdown-location"
-        onClick={() => setIsActive(true)} // Open dropdown on click
         type="text"
-        placeholder="Enter or select location..." // Add a placeholder
-        value={inputValue} // Use inputValue state
-        onChange={handleInputChange} // Update inputValue as user types
-        onBlur={handleInputBlur} // Handle blur to potentially save custom input
-        onFocus={handleInputFocus} // Open dropdown on focus
+        placeholder="Enter or select location..."
+        value={inputValue}
+        onChange={handleInputChange}
+        onBlur={handleInputBlur}
+        onFocus={handleInputFocus}
+        onClick={() => setIsActive(true)}
       />
       {isActive && (
-        <div
-          className="box-dropdown-location absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md overflow-hidden"
-        >
+        <div className="box-dropdown-location absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md overflow-hidden">
           <div className="list-locations max-h-60 overflow-y-auto">
-            {/* Option to add custom input if it doesn't match existing and is not empty */}
-            {inputValue.trim() !== "" && !locations.some(loc => loc.placeName.toLowerCase() === inputValue.toLowerCase()) && (
-              <div
-                onClick={() => handleSelectFromList(inputValue)} // Treat custom input as a selection
-                className="item-location p-2 cursor-pointer hover:bg-gray-100 border-b border-gray-200" // Add border to separate
-                key="custom-option" // Unique key for the custom option
-              >
-                <div className="location-info">
-                  <h6 className="text-16-medium color-text title-location">
-                    Add "{inputValue}" as new location
-                  </h6>
-                  {/* Optionally add a small icon or text indicating it's custom */}
-                </div>
-              </div>
-            )}
-            {filteredLocations.length > 0 ? (
-              filteredLocations.map((elm) => ( // Removed 'i' index, used elm.id if available, otherwise used elm.placeName as key
+            {inputValue.trim() !== "" &&
+              !locations.some(
+                (loc) =>
+                  loc.placeName.toLowerCase() === inputValue.toLowerCase()
+              ) && (
                 <div
-                  key={elm.id || elm.placeName} // Use id if available, otherwise placeName (ensure placeName is unique or handle duplicates)
+                  onClick={() => handleSelectFromList(inputValue)}
+                  className="item-location p-2 cursor-pointer hover:bg-gray-100 border-b border-gray-200"
+                  key="custom-option"
+                >
+                  <div className="location-info">
+                    <h6 className="text-16-medium color-text title-location">
+                      Add "{inputValue}" as new location
+                    </h6>
+                  </div>
+                </div>
+              )}
+            {filteredLocations.length > 0 ? (
+              filteredLocations.map((elm) => (
+                <div
+                  key={elm.id || elm.placeName}
                   onClick={() => handleSelectFromList(elm.placeName)}
                   className="item-location cursor-pointer p-2 hover:bg-gray-100"
                 >
@@ -132,7 +116,9 @@ export default function PlacePicker() {
                 </div>
               ))
             ) : (
-              <div className="item-location p-2 text-gray-500">No locations found</div>
+              <div className="item-location p-2 text-gray-500">
+                No locations found
+              </div>
             )}
           </div>
         </div>

@@ -1,4 +1,3 @@
-// app/page.js (or the relevant home page file)
 import Footer1 from "@/components/footers/Footer1";
 import Header1 from "@/components/headers/Header1";
 import MobileHeader1 from "@/components/headers/MobailHeader1";

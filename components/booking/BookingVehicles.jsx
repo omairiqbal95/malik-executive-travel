@@ -1,10 +1,37 @@
+"use client";
+
 import React from "react";
-import Pagination from "../common/Pagination";
 import { cars, features } from "@/data/cars";
 import Image from "next/image";
 import Link from "next/link";
+import { useBookingStore } from "@/store/useBookingStore";
 
 export default function BookingVehicles() {
+  const { date, time, pickup, dropoff } = useBookingStore();
+
+  const formatDate = (d) => {
+    if (!d) return "Select date";
+    if (d instanceof Date) {
+      return d.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
+    }
+    return String(d);
+  };
+
+  const formatTime = (t) => {
+    if (!t) return "Select time";
+    if (/^\d{1,2}:\d{2}$/.test(t)) {
+      const [h, m] = t.split(':');
+      const hh = String(h).padStart(2, '0');
+      const mm = String(m).padStart(2, '0');
+      return `${hh}:${mm}`;
+    }
+    return t; 
+  };
+
   return (
     <div className="box-row-tab mt-50">
       <div className="box-tab-left">
@@ -85,9 +112,10 @@ export default function BookingVehicles() {
         <div className="sidebar">
           <div className="d-flex align-items-center justify-content-between wow fadeInUp">
             <h6 className="text-20-medium color-text">Ride Summary</h6>
+            {/* TODO: Later, make "Edit" go back to home with prefilled data */}
             <a
               className="text-14-medium color-text text-decoration-underline"
-              href="#"
+              href="/"
             >
               Edit
             </a>
@@ -97,13 +125,13 @@ export default function BookingVehicles() {
               <li>
                 <span className="location-item">A </span>
                 <span className="info-location text-14-medium">
-                  Barcelona El Prat Airport (BCN)
+                  {pickup || "Pickup location"}
                 </span>
               </li>
               <li>
                 <span className="location-item">B </span>
                 <span className="info-location text-14-medium">
-                  Hotel Arts Barcelona
+                  {dropoff || "Drop-off location"}
                 </span>
               </li>
             </ul>
@@ -113,39 +141,38 @@ export default function BookingVehicles() {
               <li>
                 <span className="icon-item icon-plan"> </span>
                 <span className="info-location text-14-medium">
-                  Thu, Oct 06, 2022
+                  {formatDate(date)}
                 </span>
               </li>
               <li>
                 <span className="icon-item icon-time"></span>
                 <span className="info-location text-14-medium">
-                  6:15 PM
+                  {formatTime(time)}
                 </span>
               </li>
             </ul>
           </div>
+          {/* Map and distance can stay static for now, or enhance later */}
           <div className="mt-20 wow fadeInUp">
             <div className="box-map-route">
+              {/* Consider dynamic map later */}
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11905.58370691577!2d2.158990777158385!3d41.39020507926246!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4a2f75b4dcac9%3A0x24639460200ac820!2sBarcelona%2C%20Spain!5e0!3m2!1sen!2s!4v1730818900000!5m2!1sen!2s"
+                src="https://www.google.com/maps/embed?pb=..."
                 style={{ border: "0px", width: "100%", height: "200px" }}
                 allowFullScreen=""
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               ></iframe>
             </div>
+            {/* Keep estimated distance/time as placeholder for now */}
             <div className="box-info-route">
               <div className="info-route-left">
                 <span className="text-14 color-grey">Estimated Distance</span>
-                <span className="text-14-medium color-text">
-                  ~15 km
-                </span>
+                <span className="text-14-medium color-text">~15 km</span>
               </div>
               <div className="info-route-left">
                 <span className="text-14 color-grey">Estimated Time</span>
-                <span className="text-14-medium color-text">
-                  ~25 mins
-                </span>
+                <span className="text-14-medium color-text">~25 mins</span>
               </div>
             </div>
           </div>
