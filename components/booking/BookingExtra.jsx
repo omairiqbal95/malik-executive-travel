@@ -8,11 +8,31 @@ import { useBookingStore } from "@/store/useBookingStore";
 
 export default function BookingExtra() {
   const bookingState = useBookingStore();
+
+  useEffect(() => {
+    if (!extrasData) {
+      import("@/data/cars").then(mod => {
+        useBookingStore.getState().setExtrasData(mod.extras);
+      });
+    }
+  }, [extrasData]);
+
   useEffect(() => {
     console.log("Booking store state:", bookingState);
   }, []);
 
-  const { date, time, pickup, dropoff, selectedVehicle, extras, setExtra, removeExtra } = useBookingStore();
+  const {
+    date,
+    time,
+    pickup,
+    dropoff,
+    selectedVehicle,
+    extras,
+    setExtra,
+    removeExtra,
+    getBasePrice,
+    getTotalPrice
+  } = useBookingStore();
 
   useEffect(() => {
     activeInputFocus();
@@ -95,11 +115,13 @@ export default function BookingExtra() {
             {quantityItems.map((elm) => {
               const state = getExtraState(elm.id);
               const qty = state.quantity || 0;
+              const totalPrice = elm.price * qty;
+
               return (
                 <div key={elm.id} className="item-extra">
                   <div className="extra-info">
                     <h5 className="text-20-medium color-text mb-5">
-                      {elm.title} <span className="price">€{elm.price}</span>
+                      {elm.title} <span className="price">€{totalPrice.toFixed(2)}</span>
                     </h5>
                     <p className="text-14 color-grey">{elm.description}</p>
                   </div>
@@ -172,6 +194,8 @@ export default function BookingExtra() {
           </div>
         </div>
       </div>
+
+      {/* ===== SIDEBAR WITH TOTAL PRICE ===== */}
       <div className="box-tab-right">
         <div className="sidebar">
           <div className="d-flex align-items-center justify-content-between wow fadeInUp">
@@ -184,24 +208,23 @@ export default function BookingExtra() {
             </a>
           </div>
 
-          {/* Locations + Vehicle */}
           <div className="mt-20 wow fadeInUp">
             <ul className="list-routes">
-              <li className="route-item">
-                <span className="location-item">A</span>
+              <li>
+                <span className="location-item">A </span>
                 <span className="info-location text-14-medium">
                   {pickup || "Pickup location"}
                 </span>
               </li>
-              <li className="route-item">
-                <span className="location-item">B</span>
+              <li>
+                <span className="location-item">B </span>
                 <span className="info-location text-14-medium">
                   {dropoff || "Drop-off location"}
                 </span>
               </li>
               {selectedVehicle && (
-                <li className="route-item no-arrow">
-                  <span className="location-item">V</span>
+                <li>
+                  <span className="location-item">V </span>
                   <span className="info-location text-14-medium">
                     {selectedVehicle.title}
                   </span>
@@ -210,7 +233,6 @@ export default function BookingExtra() {
             </ul>
           </div>
 
-          {/* Date & Time */}
           <div className="mt-20 wow fadeInUp">
             <ul className="list-icons">
               <li>
@@ -228,7 +250,30 @@ export default function BookingExtra() {
             </ul>
           </div>
 
-          {/* Map & Route Info */}
+          {/* ===== TOTAL PRICE BLOCK ===== */}
+          {selectedVehicle && (
+            <div className="mt-20 wow fadeInUp">
+              <div className="box-total-price p-3 bg-light rounded">
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <span className="text-16 color-grey">Base Price</span>
+                  <span className="text-16-medium color-text">€{getBasePrice().toFixed(2)}</span>
+                </div>
+                {extras.length > 0 && (
+                  <div className="d-flex justify-content-between align-items-center mb-2">
+                    <span className="text-16 color-grey">Extras</span>
+                    <span className="text-16-medium color-text">
+                      €{(getTotalPrice() - getBasePrice()).toFixed(2)}
+                    </span>
+                  </div>
+                )}
+                <div className="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+                  <span className="text-18-medium color-text">Total</span>
+                  <span className="text-20-medium color-text">€{getTotalPrice().toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="mt-20 wow fadeInUp">
             <div className="box-map-route">
               <iframe
@@ -252,7 +297,6 @@ export default function BookingExtra() {
           </div>
         </div>
 
-        {/* Features List */}
         <div className="sidebar wow fadeInUp">
           <ul className="list-ticks list-ticks-small list-ticks-small-booking">
             {features.map((feature, index) => (

@@ -12,9 +12,15 @@ export default function PassengerDetails() {
   }, []);
 
   const {
+    pickup,
+    dropoff,
+    date,
+    time,
     selectedVehicle,
     passenger,
-    setPassenger
+    setPassenger,
+    getBasePrice,
+    getTotalPrice
   } = useBookingStore();
 
   useEffect(() => {
@@ -63,6 +69,29 @@ export default function PassengerDetails() {
     Array.from({ length: maxLuggage }, (_, i) => i + 1),
     [maxLuggage]
   );
+
+  const formatDate = (d) => {
+    if (!d) return "Select date";
+    if (d instanceof Date) {
+      return d.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
+    }
+    return String(d);
+  };
+
+  const formatTime = (t) => {
+    if (!t) return "Select time";
+    if (/^\d{1,2}:\d{2}$/.test(t)) {
+      const [h, m] = t.split(':');
+      const hh = String(h).padStart(2, '0');
+      const mm = String(m).padStart(2, '0');
+      return `${hh}:${mm}`;
+    }
+    return t;
+  };
 
   return (
     <div className="box-row-tab mt-50">
@@ -208,35 +237,40 @@ export default function PassengerDetails() {
               </svg>
             </Link>
           </div>
-
         </div>
       </div>
 
-      {/* Ride Summary - no Sidebar */}
+      {/* ===== RIDE SUMMARY WITH TOTAL PRICE ===== */}
       <div className="box-tab-right">
         <div className="sidebar">
           <div className="d-flex align-items-center justify-content-between wow fadeInUp">
             <h6 className="text-20-medium color-text">Ride Summary</h6>
+            <a
+              className="text-14-medium color-text text-decoration-underline"
+              href="/"
+            >
+              Edit
+            </a>
           </div>
           <div className="mt-20 wow fadeInUp">
             <ul className="list-routes">
               <li>
                 <span className="location-item">A </span>
                 <span className="info-location text-14-medium">
-                  {bookingState.pickup || "Pickup location"}
+                  {pickup || "Pickup location"}
                 </span>
               </li>
               <li>
                 <span className="location-item">B </span>
                 <span className="info-location text-14-medium">
-                  {bookingState.dropoff || "Drop-off location"}
+                  {dropoff || "Drop-off location"}
                 </span>
               </li>
-              {bookingState.selectedVehicle && (
+              {selectedVehicle && (
                 <li>
                   <span className="location-item">V </span>
                   <span className="info-location text-14-medium">
-                    {bookingState.selectedVehicle.title}
+                    {selectedVehicle.title}
                   </span>
                 </li>
               )}
@@ -247,38 +281,42 @@ export default function PassengerDetails() {
               <li>
                 <span className="icon-item icon-plan"> </span>
                 <span className="info-location text-14-medium">
-                  {(() => {
-                    const d = bookingState.date;
-                    if (!d) return "Select date";
-                    if (d instanceof Date) {
-                      return d.toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      });
-                    }
-                    return String(d);
-                  })()}
+                  {formatDate(date)}
                 </span>
               </li>
               <li>
                 <span className="icon-item icon-time"></span>
                 <span className="info-location text-14-medium">
-                  {(() => {
-                    const t = bookingState.time;
-                    if (!t) return "Select time";
-                    if (/^\d{1,2}:\d{2}$/.test(t)) {
-                      const [h, m] = t.split(':');
-                      const hh = String(h).padStart(2, '0');
-                      const mm = String(m).padStart(2, '0');
-                      return `${hh}:${mm}`;
-                    }
-                    return t;
-                  })()}
+                  {formatTime(time)}
                 </span>
               </li>
             </ul>
           </div>
+
+          {/* ===== TOTAL PRICE BLOCK ===== */}
+          {selectedVehicle && (
+            <div className="mt-20 wow fadeInUp">
+              <div className="box-total-price p-3 bg-light rounded">
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <span className="text-16 color-grey">Base Price</span>
+                  <span className="text-16-medium color-text">€{getBasePrice().toFixed(2)}</span>
+                </div>
+                {bookingState.extras.length > 0 && (
+                  <div className="d-flex justify-content-between align-items-center mb-2">
+                    <span className="text-16 color-grey">Extras</span>
+                    <span className="text-16-medium color-text">
+                      €{(getTotalPrice() - getBasePrice()).toFixed(2)}
+                    </span>
+                  </div>
+                )}
+                <div className="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+                  <span className="text-18-medium color-text">Total</span>
+                  <span className="text-20-medium color-text">€{getTotalPrice().toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="mt-20 wow fadeInUp">
             <div className="box-map-route">
               <iframe

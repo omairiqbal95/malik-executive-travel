@@ -3,11 +3,13 @@ import React from "react";
 import DatePicker from "react-multi-date-picker";
 
 export default function DatePickerComponent({ value, onChange }) {
+  const today = new Date();
   return (
     <DatePicker
       format="MMMM DD YYYY"
-      value={value}          // Should be a Date, string, or valid input for the library
-      onChange={onChange}    // This receives a DateObject (from react-multi-date-picker)
+      value={value}
+      onChange={onChange}
+      minDate={today} // ← Prevents past dates
       style={{ width: "100%" }}
       containerStyle={{ width: "100%" }}
     />
