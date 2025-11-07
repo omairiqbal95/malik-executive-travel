@@ -1,20 +1,6 @@
-// components/Hero.jsx (or .tsx)
 "use client";
-import { useBooking } from "@/context/BookingContext"; // Import the hook
-import DatePickerComponent from "@/components/common/DatePicker";
-import PlacePicker from "@/components/common/PlacePicker"; // Assuming this is the updated PlacePicker
-import TimePickerComponent from "@/components/common/TimePicker";
-import Image from "next/image";
-import { Autoplay, Navigation, Pagination } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
-import Link from "next/link";
 
-export default function Hero() {
-  // Use the booking context
-  const { date, time, fromLocation, toLocation, setDate, setTime, setFromLocation, setToLocation } = useBooking();
-
-  // Define banners data directly within the component file, focused on Barcelona
-  const banners = [
+const banners = [
     {
       id: 1,
       url: "/assets/imgs/page/homepage1/banner.png", // Replace with actual image path
@@ -77,6 +63,15 @@ export default function Hero() {
     },
   ];
 
+import DatePickerComponent from "@/components/common/DatePicker";
+import PlacePicker from "@/components/common/PlacePicker";
+import TimePickerComponent from "@/components/common/TimePicker";
+import Image from "next/image";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import Link from "next/link";
+
+export default function Hero() {
   const settings = {
     slidesPerView: 1,
     loop: true,
@@ -95,26 +90,6 @@ export default function Hero() {
     },
   };
 
-  // Handlers to update the booking context state
-  const handleDateChange = (newDate) => {
-    // Assuming DatePickerComponent passes the date object correctly
-    // You might need to adjust this based on the actual output format of DatePickerComponent
-    setDate(newDate);
-  };
-
-  const handleTimeChange = (newTime) => {
-    // Assuming TimePickerComponent passes the time string correctly (e.g., "HH:mm")
-    setTime(newTime);
-  };
-
-  const handleFromChange = (newLocation) => {
-    setFromLocation(newLocation);
-  };
-
-  const handleToChange = (newLocation) => {
-    setToLocation(newLocation);
-  };
-
   return (
     <section className="section banner-home1">
       <div className="box-swiper">
@@ -123,20 +98,20 @@ export default function Hero() {
           {...settings}
           className="swiper-container swiper-banner-1 pb-0"
         >
-          {banners.map((banner) => ( // Use 'banner' instead of 'elm', use banner.id for key
-            <SwiperSlide key={banner.id} className="swiper-slide">
+          {banners.map((elm, i) => (
+            <SwiperSlide key={i} className="swiper-slide">
               <div
                 className="box-cover-image boxBgImage"
                 style={{
-                  backgroundImage: `url(${banner.url})`,
+                  backgroundImage: `url(${elm.url})`,
                 }}
               ></div>
               <div className="box-banner-info">
-                <p className="text-16 color-white wow fadeInUp">{banner.title}</p>
+                <p className="text-16 color-white wow fadeInUp">{elm.title}</p>
                 <h2 className="heading-52-medium color-white wow fadeInUp">
-                  {banner.text.split(" ").slice(0, 2).join(" ")}{" "}
+                  {elm.text.split(" ").slice(0, 2).join(" ")}{" "}
                   <br className="d-none d-lg-block" />
-                  {banner.text.split(" ").slice(2).join(" ")}
+                  {elm.text.split(" ").slice(2).join(" ")}
                 </h2>
               </div>
             </SwiperSlide>
@@ -156,7 +131,7 @@ export default function Hero() {
           </div>
           <div className="search-inputs">
             <label className="text-14 color-grey">Date</label>
-            <DatePickerComponent value={date} onChange={handleDateChange} /> {/* Pass current value and handler */}
+            <DatePickerComponent />
           </div>
         </div>
         <div className="search-item search-time">
@@ -165,7 +140,7 @@ export default function Hero() {
           </div>
           <div className="search-inputs">
             <label className="text-14 color-grey">Time</label>
-            <TimePickerComponent value={time} onChange={handleTimeChange} /> {/* Pass current value and handler */}
+            <TimePickerComponent />
           </div>
         </div>
         <div className="search-item search-from">
@@ -174,7 +149,7 @@ export default function Hero() {
           </div>
           <div className="search-inputs">
             <label className="text-14 color-grey">From</label>
-            <PlacePicker value={fromLocation} onChange={handleFromChange} /> {/* Pass current value and handler */}
+            <PlacePicker />
           </div>
         </div>
         <div className="search-item search-to">
@@ -183,17 +158,20 @@ export default function Hero() {
           </div>
           <div className="search-inputs">
             <label className="text-14 color-grey">To</label>
-            <PlacePicker value={toLocation} onChange={handleToChange} /> {/* Pass current value and handler */}
+            <PlacePicker />
           </div>
         </div>
         <div className="search-item search-button">
-          <Link href="/booking-vehicle">
-            <button className="btn btn-search" type="button"> {/* Changed type to 'button' if form submission logic is elsewhere */}
+          
+          <Link
+              href="/booking-vehicle"
+            >
+            <button className="btn btn-search" type="submit" >
               <Image
                 width={20}
                 height={20}
                 src="/assets/imgs/template/icons/search.svg"
-                alt="Search"
+                alt="luxride"
               />
               Search
             </button>

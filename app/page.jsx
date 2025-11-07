@@ -11,7 +11,6 @@ import Partners from "@/components/common/partners/Partners";
 import Process from "@/components/common/process/Process";
 import Service from "@/components/homes/home-1/Service";
 import Testimonials from "@/components/common/testimonials/Testimonials2";
-import { BookingProvider } from "@/context/BookingContext"; // Import the provider
 
 export const metadata = {
   title:
@@ -21,7 +20,6 @@ export const metadata = {
 };
 export default function Home() {
   return (
-    <BookingProvider> {/* Wrap the main content area with BookingProvider */}
       <>
         <Header1 /> <MobileHeader1 />
         <main className="main">
@@ -37,6 +35,5 @@ export default function Home() {
         </main>
         <Footer1 />
       </>
-    </BookingProvider>
   );
 }

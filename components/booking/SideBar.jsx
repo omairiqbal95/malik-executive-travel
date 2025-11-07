@@ -1,57 +1,6 @@
-// components/SideBar.jsx (or .tsx)
 import React from "react";
-import { useBooking } from "@/context/BookingContext"; // Import the hook
-import { cars, extras } from "@/data/cars"; // Import car and extra data to get titles/prices
 
 export default function SideBar() {
-  const { 
-    passengerDetails, 
-    selectedVehicle, 
-    selectedExtras, 
-    date, 
-    time, 
-    fromLocation, 
-    toLocation, 
-    flightNumber, 
-    notesForDriver, 
-    numberOfPassengers, 
-    numberOfLuggage,
-    calculatedPrice // Get the calculated price from context
-  } = useBooking();
-
-  // Helper function to format date (adjust format as needed)
-  const formatDate = (dateObj) => {
-    if (!dateObj) return "Not selected";
-    // Example: "Thu, Oct 06, 2023"
-    return dateObj.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
-  };
-
-  // Helper function to format time (adjust format as needed)
-  const formatTime = (timeStr) => {
-    if (!timeStr) return "Not selected";
-    // Assuming timeStr is in HH:mm format, you can adjust the display format here if needed
-    return timeStr;
-  };
-
-  // Get selected vehicle details
-  const selectedVehicleDetails = selectedVehicle ? cars.find(car => car.id === selectedVehicle) : null;
-
-  // Calculate total extra price
-  const totalExtraPrice = selectedExtras.reduce((total, extra) => {
-    const extraData = extras.find(e => e.id === extra.id);
-    if (extraData) {
-      if (extra.quantity !== undefined) {
-        return total + (extraData.price * (extra.quantity || 1));
-      } else if (extra.selected) { // For select items
-        return total + extraData.price;
-      }
-    }
-    return total;
-  }, 0);
-
-  // Calculate base vehicle price (assuming it's per hour/day or fixed)
-  const baseVehiclePrice = selectedVehicleDetails ? selectedVehicleDetails.price : 0;
-
   return (
     <div className="box-tab-right">
       <div className="sidebar">
@@ -69,14 +18,12 @@ export default function SideBar() {
             <li>
               <span className="location-item">A </span>
               <span className="info-location text-14-medium">
-                {fromLocation || "Not selected"}
+                Manchester, UK
               </span>
             </li>
             <li>
-              <span className="location-item">B </span>
-              <span className="info-location text-14-medium">
-                {toLocation || "Not selected"}
-              </span>
+              <span className="location-item">A </span>
+              <span className="info-location text-14-medium">London, UK</span>
             </li>
           </ul>
         </div>
@@ -85,42 +32,35 @@ export default function SideBar() {
             <li>
               <span className="icon-item icon-plan"> </span>
               <span className="info-location text-14-medium">
-                {formatDate(date)}
+                Thu, Oct 06, 2022
               </span>
             </li>
             <li>
               <span className="icon-item icon-time"></span>
-              <span className="info-location text-14-medium">
-                {formatTime(time)}
-              </span>
+              <span className="info-location text-14-medium">6 PM : 15</span>
             </li>
           </ul>
         </div>
         <div className="mt-20 wow fadeInUp">
           <div className="box-map-route">
-            {/* Consider making the map dynamic based on from/to locations, or use a placeholder */}
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11905.58370691577!2d2.158990777158385!3d41.39020507926246!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4a2f75b4dcac9%3A0x24639460200ac820!2sBarcelona%2C%20Spain!5e0!3m2!1sen!2s!4v1730818900000!5m2!1sen!2s"
-              style={{ border: "0px", width: "100%", height: "200px" }} // Added width/height
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.15830869428!2d-74.119763973046!3d40.69766374874431!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2zVGjDoG5oIHBo4buRIE5ldyBZb3JrLCBUaeG7g3UgYmFuZyBOZXcgWW9yaywgSG9hIEvhu7M!5e0!3m2!1svi!2s!4v1679223612023!5m2!1svi!2s"
+              style={{ border: "0px" }}
               allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
           </div>
-          {/* Note: Distance and Time might need to be calculated dynamically based on from/to and traffic */}
-          {/* For now, showing placeholders or derived from context if available */}
           <div className="box-info-route">
             <div className="info-route-left">
-              <span className="text-14 color-grey">Passengers</span>
+              <span className="text-14 color-grey">Total Distance</span>
               <span className="text-14-medium color-text">
-                {numberOfPassengers || 1}
+                311 km/ 194 miles
               </span>
             </div>
             <div className="info-route-left">
-              <span className="text-14 color-grey">Luggage</span>
-              <span className="text-14-medium color-text">
-                {numberOfLuggage || 1}
-              </span>
+              <span className="text-14 color-grey">Total Time</span>
+              <span className="text-14-medium color-text">3h 43m</span>
             </div>
           </div>
           <div className="border-bottom mt-30 mb-25"></div>
@@ -128,57 +68,47 @@ export default function SideBar() {
             <span className="text-14 color-grey">Vehicle</span>
             <br />
             <span className="text-14-medium color-text">
-              {selectedVehicleDetails ? selectedVehicleDetails.title : "Not selected"}
+              Mercedes-Benz E220
             </span>
           </div>
-          {selectedExtras.length > 0 && (
-            <>
-              <div className="border-bottom mt-30 mb-25"></div>
-              <div className="mt-0">
-                <span className="text-14 color-grey">Extra Options</span>
-                <br />
-                {selectedExtras.map(extra => {
-                  const extraData = extras.find(e => e.id === extra.id);
-                  if (!extraData) return null; // Skip if extra data not found
-
-                  if (extra.quantity !== undefined) {
-                    return (
-                      <span key={extra.id} className="text-14-medium color-text">
-                        {extra.quantity} x {extraData.title} - €{(extraData.price * extra.quantity).toFixed(2)}
-                        <br />
-                      </span>
-                    );
-                  } else if (extra.selected) { // For select items
-                    return (
-                      <span key={extra.id} className="text-14-medium color-text">
-                        1 x {extraData.title} - €{extraData.price.toFixed(2)}
-                        <br />
-                      </span>
-                    );
-                  }
-                  return null;
-                })}
-              </div>
-            </>
-          )}
+          <div className="border-bottom mt-30 mb-25"></div>
+          <div className="mt-0">
+            <span className="text-14 color-grey">Extra Options</span>
+            <br />
+            <span className="text-14-medium color-text">
+              1 x Child Seat - $5.00
+            </span>
+            <br />
+            <span className="text-14-medium color-text">
+              1 x Bouquet of Flowers - $75.00
+            </span>
+            <br />
+            <span className="text-14-medium color-text">
+              2 x Vodka Bottle - $78.00
+            </span>
+            <br />
+            <span className="text-14-medium color-text">
+              1 x Bodyguard Service - $750.00
+            </span>
+          </div>
         </div>
       </div>
       <div className="sidebar wow fadeInUp">
         <ul className="list-prices list-prices-2">
           <li>
             <span className="text">Selected vehicle</span>
-            <span className="price">€{baseVehiclePrice.toFixed(2)}</span> {/* Display base price */}
+            <span className="price">$174</span>
           </li>
           <li>
             <span className="text">Extra options</span>
-            <span className="price">€{totalExtraPrice.toFixed(2)}</span> {/* Display total extra price */}
+            <span className="price">$90.25</span>
           </li>
         </ul>
         <div className="border-bottom mt-30 mb-15"></div>
         <ul className="list-prices">
           <li>
             <span className="text text-20-medium">Total</span>
-            <span className="price text-20-medium">€{calculatedPrice.toFixed(2)}</span> {/* Display calculated total from context */}
+            <span className="price text-20-medium">$909.47</span>
           </li>
         </ul>
       </div>
