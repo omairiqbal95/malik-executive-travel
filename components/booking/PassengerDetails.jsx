@@ -1,57 +1,68 @@
-// components/PassengerDetails.jsx (or .tsx)
 "use client";
-import React, { useEffect } from "react";
-import SideBar from "./SideBar";
+
+import { useEffect, useMemo } from "react";
 import Link from "next/link";
+import { features } from "@/data/cars";
+import { useBookingStore } from "@/store/useBookingStore";
 
 export default function PassengerDetails() {
+  const bookingState = useBookingStore();
   useEffect(() => {
-    // Focus event
-    document
-      .querySelectorAll(
-        ".form-comment input, .form-comment textarea, .form-comment select"
-      )
-      ?.forEach(function (element) {
-        element?.addEventListener("focus", function () {
-          this?.closest(".form-group").classList.add("focused");
-        });
-      });
-
-    // Blur event
-    document
-      .querySelectorAll(
-        ".form-comment input, .form-comment textarea, .form-comment select"
-      )
-      ?.forEach(function (element) {
-        element.addEventListener("blur", function () {
-          var inputValue = this.value;
-          if (inputValue === "") {
-            this.classList.remove("filled");
-            this.closest(".form-group").classList.remove("focused");
-          } else {
-            this.classList.add("filled");
-          }
-        });
-      });
-
-    // Check for pre-filled inputs
-    document
-      .querySelectorAll(
-        ".form-comment input, .form-comment textarea, .form-comment select"
-      )
-      ?.forEach(function (element) {
-        if (element?.value !== "") {
-          element?.closest(".form-group").classList.add("focused");
-          element.classList.add("filled");
-        }
-      });
+    console.log("Booking store state:", bookingState);
   }, []);
 
-  // Example: Pre-populate passenger/luggage counts based on selected car from previous step
-  // This would require state management across pages, e.g., using Context API or passing props
-  // For now, using placeholder logic or defaulting to empty
-  const initialPassengerCount = 1; // e.g., from context or props
-  const initialLuggageCount = 1; // e.g., from context or props
+  const {
+    selectedVehicle,
+    passenger,
+    setPassenger
+  } = useBookingStore();
+
+  useEffect(() => {
+    const inputs = document.querySelectorAll(
+      ".form-comment input, .form-comment textarea, .form-comment select"
+    );
+    const handleFocus = (e) => {
+      e.target.closest(".form-group")?.classList.add("focused");
+    };
+    const handleBlur = (e) => {
+      const input = e.target;
+      if (input.value === "") {
+        input.classList.remove("filled");
+        input.closest(".form-group")?.classList.remove("focused");
+      } else {
+        input.classList.add("filled");
+      }
+    };
+
+    inputs.forEach(el => {
+      el.addEventListener("focus", handleFocus);
+      el.addEventListener("blur", handleBlur);
+      if (el.value !== "") {
+        el.closest(".form-group")?.classList.add("focused");
+        el.classList.add("filled");
+      }
+    });
+
+    return () => {
+      inputs.forEach(el => {
+        el.removeEventListener("focus", handleFocus);
+        el.removeEventListener("blur", handleBlur);
+      });
+    };
+  }, []);
+
+  const maxPassengers = selectedVehicle?.passenger || 8;
+  const maxLuggage = selectedVehicle?.luggage || 10;
+
+  const passengerOptions = useMemo(() =>
+    Array.from({ length: maxPassengers }, (_, i) => i + 1),
+    [maxPassengers]
+  );
+
+  const luggageOptions = useMemo(() =>
+    Array.from({ length: maxLuggage }, (_, i) => i + 1),
+    [maxLuggage]
+  );
 
   return (
     <div className="box-row-tab mt-50">
@@ -72,8 +83,9 @@ export default function PassengerDetails() {
                       className="form-control"
                       id="fullname"
                       type="text"
-                      defaultValue=""
-                      required // Added required for validation
+                      value={passenger.firstName}
+                      onChange={(e) => setPassenger('firstName', e.target.value)}
+                      required
                     />
                   </div>
                 </div>
@@ -86,8 +98,9 @@ export default function PassengerDetails() {
                       className="form-control"
                       id="lastname"
                       type="text"
-                      defaultValue=""
-                      required // Added required for validation
+                      value={passenger.lastName}
+                      onChange={(e) => setPassenger('lastName', e.target.value)}
+                      required
                     />
                   </div>
                 </div>
@@ -99,9 +112,10 @@ export default function PassengerDetails() {
                     <input
                       className="form-control"
                       id="email"
-                      type="email" // Changed to email type for better validation
-                      defaultValue=""
-                      required // Added required for validation
+                      type="email"
+                      value={passenger.email}
+                      onChange={(e) => setPassenger('email', e.target.value)}
+                      required
                     />
                   </div>
                 </div>
@@ -113,9 +127,10 @@ export default function PassengerDetails() {
                     <input
                       className="form-control"
                       id="phone"
-                      type="tel" // Changed to tel type for phone numbers
-                      defaultValue=""
-                      required // Added required for validation
+                      type="tel"
+                      value={passenger.phone}
+                      onChange={(e) => setPassenger('phone', e.target.value)}
+                      required
                     />
                   </div>
                 </div>
@@ -137,15 +152,12 @@ export default function PassengerDetails() {
                     <select
                       className="form-control"
                       id="passengers"
-                      defaultValue={initialPassengerCount} // Use initial value
-                      required // Added required for validation
+                      value={passenger.passengers}
+                      onChange={(e) => setPassenger('passengers', parseInt(e.target.value))}
+                      required
                     >
-                      {/* Dynamically generate options based on selected car capacity if available */}
-                      {/* For now, using a reasonable range */}
-                      {[...Array(8)].map((_, i) => (
-                        <option key={i + 1} value={i + 1}>
-                          {i + 1}
-                        </option>
+                      {passengerOptions.map(num => (
+                        <option key={num} value={num}>{num}</option>
                       ))}
                     </select>
                   </div>
@@ -158,27 +170,25 @@ export default function PassengerDetails() {
                     <select
                       className="form-control"
                       id="luggage"
-                      defaultValue={initialLuggageCount} // Use initial value
-                      required // Added required for validation
+                      value={passenger.luggage}
+                      onChange={(e) => setPassenger('luggage', parseInt(e.target.value))}
+                      required
                     >
-                      {/* Dynamically generate options based on selected car capacity if available */}
-                      {/* For now, using a reasonable range */}
-                      {[...Array(10)].map((_, i) => (
-                        <option key={i + 1} value={i + 1}>
-                          {i + 1}
-                        </option>
+                      {luggageOptions.map(num => (
+                        <option key={num} value={num}>{num}</option>
                       ))}
                     </select>
                   </div>
                 </div>
-                {/* Removed the Notes for the Driver section */}
               </div>
             </form>
           </div>
           <div className="mt-30 mb-120 wow fadeInUp">
             <Link
               className="btn btn-primary btn-primary-big w-100"
-              href="/booking-payment"
+              href="https://calendly.com/gestoriasahel-info/30min"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Continue to Payment
               <svg
@@ -198,9 +208,109 @@ export default function PassengerDetails() {
               </svg>
             </Link>
           </div>
+
         </div>
       </div>
-      <SideBar />
+
+      {/* Ride Summary - no Sidebar */}
+      <div className="box-tab-right">
+        <div className="sidebar">
+          <div className="d-flex align-items-center justify-content-between wow fadeInUp">
+            <h6 className="text-20-medium color-text">Ride Summary</h6>
+          </div>
+          <div className="mt-20 wow fadeInUp">
+            <ul className="list-routes">
+              <li>
+                <span className="location-item">A </span>
+                <span className="info-location text-14-medium">
+                  {bookingState.pickup || "Pickup location"}
+                </span>
+              </li>
+              <li>
+                <span className="location-item">B </span>
+                <span className="info-location text-14-medium">
+                  {bookingState.dropoff || "Drop-off location"}
+                </span>
+              </li>
+              {bookingState.selectedVehicle && (
+                <li>
+                  <span className="location-item">V </span>
+                  <span className="info-location text-14-medium">
+                    {bookingState.selectedVehicle.title}
+                  </span>
+                </li>
+              )}
+            </ul>
+          </div>
+          <div className="mt-20 wow fadeInUp">
+            <ul className="list-icons">
+              <li>
+                <span className="icon-item icon-plan"> </span>
+                <span className="info-location text-14-medium">
+                  {(() => {
+                    const d = bookingState.date;
+                    if (!d) return "Select date";
+                    if (d instanceof Date) {
+                      return d.toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      });
+                    }
+                    return String(d);
+                  })()}
+                </span>
+              </li>
+              <li>
+                <span className="icon-item icon-time"></span>
+                <span className="info-location text-14-medium">
+                  {(() => {
+                    const t = bookingState.time;
+                    if (!t) return "Select time";
+                    if (/^\d{1,2}:\d{2}$/.test(t)) {
+                      const [h, m] = t.split(':');
+                      const hh = String(h).padStart(2, '0');
+                      const mm = String(m).padStart(2, '0');
+                      return `${hh}:${mm}`;
+                    }
+                    return t;
+                  })()}
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div className="mt-20 wow fadeInUp">
+            <div className="box-map-route">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11905.58370691577!2d2.158990777158385!3d41.39020507926246!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4a2f75b4dcac9%3A0x24639460200ac820!2sBarcelona%2C%20Spain!5e0!3m2!1sen!2s!4v1730818900000!5m2!1sen!2s"
+                style={{ border: "0px", width: "100%", height: "200px" }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+            <div className="box-info-route">
+              <div className="info-route-left">
+                <span className="text-14 color-grey">Estimated Distance</span>
+                <span className="text-14-medium color-text">~15 km</span>
+              </div>
+              <div className="info-route-left">
+                <span className="text-14 color-grey">Estimated Time</span>
+                <span className="text-14-medium color-text">~25 mins</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="sidebar wow fadeInUp">
+          <ul className="list-ticks list-ticks-small list-ticks-small-booking">
+            {features.map((feature, index) => (
+              <li key={index} className="text-14 mb-20">
+                {feature}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }

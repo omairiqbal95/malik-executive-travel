@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useBookingStore } from "@/store/useBookingStore";
 
 export default function BookingVehicles() {
-  const { date, time, pickup, dropoff } = useBookingStore();
+  const { date, time, pickup, dropoff, setSelectedVehicle } = useBookingStore();
 
   const formatDate = (d) => {
     if (!d) return "Select date";
@@ -29,7 +29,7 @@ export default function BookingVehicles() {
       const mm = String(m).padStart(2, '0');
       return `${hh}:${mm}`;
     }
-    return t; 
+    return t;
   };
 
   return (
@@ -84,7 +84,12 @@ export default function BookingVehicles() {
                   <div className="price-desc mb-20">
                     All prices include IVA, fees &amp; tip.
                   </div>
-                  <Link className="btn btn-primary w-100" href="/booking-extra">
+                  {/* Inside the cars.map loop */}
+                  <Link
+                    className="btn btn-primary w-100"
+                    href="/booking-extra"
+                    onClick={() => setSelectedVehicle(elm)} 
+                  >
                     Select
                     <svg
                       className="icon-16 ml-5"
@@ -112,13 +117,6 @@ export default function BookingVehicles() {
         <div className="sidebar">
           <div className="d-flex align-items-center justify-content-between wow fadeInUp">
             <h6 className="text-20-medium color-text">Ride Summary</h6>
-            {/* TODO: Later, make "Edit" go back to home with prefilled data */}
-            <a
-              className="text-14-medium color-text text-decoration-underline"
-              href="/"
-            >
-              Edit
-            </a>
           </div>
           <div className="mt-20 wow fadeInUp">
             <ul className="list-routes">
@@ -152,10 +150,8 @@ export default function BookingVehicles() {
               </li>
             </ul>
           </div>
-          {/* Map and distance can stay static for now, or enhance later */}
           <div className="mt-20 wow fadeInUp">
             <div className="box-map-route">
-              {/* Consider dynamic map later */}
               <iframe
                 src="https://www.google.com/maps/embed?pb=..."
                 style={{ border: "0px", width: "100%", height: "200px" }}
@@ -164,7 +160,6 @@ export default function BookingVehicles() {
                 referrerPolicy="no-referrer-when-downgrade"
               ></iframe>
             </div>
-            {/* Keep estimated distance/time as placeholder for now */}
             <div className="box-info-route">
               <div className="info-route-left">
                 <span className="text-14 color-grey">Estimated Distance</span>
