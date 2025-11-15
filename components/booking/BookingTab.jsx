@@ -23,14 +23,7 @@ const tabs = [
     iconClass: "icon-book icon-pax",
     text: "Details",
     number: "03",
-  },
-  {
-    id: 4,
-    href: "/booking-payment",
-    iconClass: "icon-book icon-payment",
-    text: "Payment",
-    number: "04",
-  },
+  }
 ];
 
 export default function BookingTab() {

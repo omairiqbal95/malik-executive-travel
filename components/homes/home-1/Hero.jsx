@@ -92,7 +92,16 @@ const banners = [
 
 export default function Hero() {
 
-  const { date, time, pickup, dropoff, setDate, setTime, setPickup, setDropoff } = useBookingStore();
+  const { 
+  date, 
+  time, 
+  pickup, 
+  dropoff, 
+  setDate, 
+  setTime, 
+  setPickup, 
+  setDropoff 
+} = useBookingStore();
 
   const handleDateChange = (dateObject) => {
     if (!dateObject) {
@@ -104,8 +113,8 @@ export default function Hero() {
   };
   
   const handleTimeChange = (newTime) => setTime(newTime);
-  const handleFromChange = (newLocation) => setPickup(newLocation);
-  const handleToChange = (newLocation) => setDropoff(newLocation);
+  const handleFromChange = (location) => setPickup(location);
+  const handleToChange = (location) => setDropoff(location);
 
   return (
     <section className="section banner-home1">
@@ -160,14 +169,14 @@ export default function Hero() {
           <div className="search-icon"><span className="item-icon icon-from"> </span></div>
           <div className="search-inputs">
             <label className="text-14 color-grey">From</label>
-            <PlacePicker value={pickup} onChange={handleFromChange} />
+            <PlacePicker value={pickup?.address || ""} onChange={handleFromChange} />
           </div>
         </div>
         <div className="search-item search-to">
           <div className="search-icon"><span className="item-icon icon-to"> </span></div>
           <div className="search-inputs">
             <label className="text-14 color-grey">To</label>
-            <PlacePicker value={dropoff} onChange={handleToChange} />
+            <PlacePicker value={dropoff?.address || ""} onChange={handleToChange} />
           </div>
         </div>
         <div className="search-item search-button">
