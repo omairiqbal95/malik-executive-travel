@@ -22,7 +22,6 @@ export default function page() {
       <Header1 /> <MobileHeader1 />
       <main className="main">
         <Banner2 />
-        <Process />
         <Features2 /> <Partners />
         <Features3 />
         <div className="mb-90"></div>
