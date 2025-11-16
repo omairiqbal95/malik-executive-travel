@@ -3,7 +3,6 @@ import Partners from "@/components/common/partners/Partners";
 import Footer1 from "@/components/footers/Footer1";
 import Header1 from "@/components/headers/Header1";
 import Testimonials from "@/components/common/testimonials/Testimonials2";
-import Process from "@/components/common/process/Process2";
 
 import Features from "@/components/common/features/Features2";
 import Banner2 from "@/components/otherPages/about/Banner2";
