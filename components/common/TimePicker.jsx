@@ -79,7 +79,7 @@ export default function TimePickerComponent({ value, onChange }) {
         <div 
           style={{
             position: 'absolute',
-            top: '100%',
+            bottom: '100%',
             left: 0,
             right: 0,
             zIndex: 1000,

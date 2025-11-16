@@ -1,69 +1,74 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
 import { features } from "@/data/cars";
 import { useBookingStore } from "@/store/useBookingStore";
 
 export default function PassengerDetails() {
-  const router = useRouter();
   const bookingState = useBookingStore();
   const {
-    pickup,
-    dropoff,
+    pickup = { address: "" },
+    dropoff = { address: "" },
     date,
     time,
     selectedVehicle,
-    passenger,
+    passenger = {},
     setPassenger,
     getBasePrice,
     getTotalPrice,
-    extras
+    extras = []
   } = bookingState;
 
   const [loading, setLoading] = useState(false);
 
   // Handle Stripe checkout
   const handlePayment = async () => {
-  try {
-    setPassenger('firstName', passenger.firstName);
-  setPassenger('lastName', passenger.lastName);
-  setPassenger('email', passenger.email);
-  setPassenger('phone', passenger.phone);
-    setLoading(true);
+    try {
+      // Ensure passenger object fields are initialized
+      setPassenger('firstName', passenger.firstName || "");
+      setPassenger('lastName', passenger.lastName || "");
+      setPassenger('email', passenger.email || "");
+      setPassenger('phone', passenger.phone || "");
+      setPassenger('passengers', passenger.passengers || 1);
+      setPassenger('luggage', passenger.luggage || 1);
 
-    console.log("Store before payment:", {
-      pickup,
-      dropoff,
-      selectedVehicle,
-      passenger,
-      extras,
-      total: getTotalPrice()
-    });
+      setLoading(true);
 
-    const response = await fetch("/api/create-checkout-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        vehicle: selectedVehicle,
-        extras,
+      console.log("Store before payment:", {
+        pickup,
+        dropoff,
+        selectedVehicle,
         passenger,
+        extras,
         total: getTotalPrice()
-      }),
-    });
+      });
 
-    const data = await response.json();
-    if (data.url) {
-      window.location.href = data.url; // redirect to Stripe Checkout
+      const response = await fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          vehicle: selectedVehicle,
+          extras,
+          passenger,
+          pickup,
+          dropoff,
+          date,
+          time,
+          total: getTotalPrice()
+        }),
+      });
+
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url; // redirect to Stripe Checkout
+      }
+    } catch (err) {
+      console.error("Stripe checkout error:", err);
+      setLoading(false);
     }
-  } catch (err) {
-    console.error("Stripe checkout error:", err);
-    setLoading(false);
-  }
-};
+  };
 
-
-
+  // Form focus/blur effects
   useEffect(() => {
     const inputs = document.querySelectorAll(
       ".form-comment input, .form-comment textarea, .form-comment select"
@@ -124,7 +129,7 @@ export default function PassengerDetails() {
                     <input
                       className="form-control"
                       type="text"
-                      value={passenger.firstName}
+                      value={passenger.firstName || ""}
                       onChange={(e) => setPassenger('firstName', e.target.value)}
                       required
                     />
@@ -136,7 +141,7 @@ export default function PassengerDetails() {
                     <input
                       className="form-control"
                       type="text"
-                      value={passenger.lastName}
+                      value={passenger.lastName || ""}
                       onChange={(e) => setPassenger('lastName', e.target.value)}
                       required
                     />
@@ -148,7 +153,7 @@ export default function PassengerDetails() {
                     <input
                       className="form-control"
                       type="email"
-                      value={passenger.email}
+                      value={passenger.email || ""}
                       onChange={(e) => setPassenger('email', e.target.value)}
                       required
                     />
@@ -160,7 +165,7 @@ export default function PassengerDetails() {
                     <input
                       className="form-control"
                       type="tel"
-                      value={passenger.phone}
+                      value={passenger.phone || ""}
                       onChange={(e) => setPassenger('phone', e.target.value)}
                       required
                     />
@@ -179,7 +184,7 @@ export default function PassengerDetails() {
                     <label className="form-label">Passengers *</label>
                     <select
                       className="form-control"
-                      value={passenger.passengers}
+                      value={passenger.passengers || 1}
                       onChange={(e) => setPassenger('passengers', parseInt(e.target.value))}
                       required
                     >
@@ -192,7 +197,7 @@ export default function PassengerDetails() {
                     <label className="form-label">Luggage *</label>
                     <select
                       className="form-control"
-                      value={passenger.luggage}
+                      value={passenger.luggage || 1}
                       onChange={(e) => setPassenger('luggage', parseInt(e.target.value))}
                       required
                     >

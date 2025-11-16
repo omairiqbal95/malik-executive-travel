@@ -85,7 +85,7 @@ export default function BookingExtra() {
                     onChange={e => setFlightNumber(e.target.value)}
                     placeholder=""
                     onFocus={e => (e.target.placeholder = "")}
-                    onBlur={e => { if (!flightNumber) e.target.placeholder = "Enter flight number (optional)"; }}
+                    onBlur={e => { if (!flightNumber) e.target.placeholder = ""; }}
                   />
                 </div>
               </div>
@@ -99,23 +99,24 @@ export default function BookingExtra() {
               const totalPrice = elm.price * qty;
 
               return (
-                <div key={elm.id} className="item-extra flex justify-between items-center mb-3">
-                  <div className="extra-info">
-                    <h5 className="text-20-medium color-text mb-1">
-                      {elm.title} <span className="price">€{totalPrice.toFixed(2)}</span>
-                    </h5>
-                    <p className="text-14 color-grey">{elm.description}</p>
+                <div key={elm.id} className="item-extra mb-3">
+                  <div className="extra-info-row">
+                    <div className="extra-info">
+                      <h5>
+                        {elm.title} <span className="price">€{totalPrice.toFixed(2)}</span>
+                      </h5>
+                    </div>
+                    <div className="extra-quantity">
+                      <span className="minus" onClick={() => handleQuantityChange(elm.id, qty - 1)}>-</span>
+                      <input
+                        type="text"
+                        value={qty}
+                        onChange={e => handleQuantityChange(elm.id, parseInt(e.target.value) || 0)}
+                      />
+                      <span className="plus" onClick={() => handleQuantityChange(elm.id, qty + 1)}>+</span>
+                    </div>
                   </div>
-                  <div className="extra-quantity flex items-center gap-2">
-                    <span className="minus cursor-pointer" onClick={() => handleQuantityChange(elm.id, qty - 1)}></span>
-                    <input
-                      className="form-control w-12 text-center"
-                      type="text"
-                      value={qty}
-                      onChange={e => handleQuantityChange(elm.id, parseInt(e.target.value) || 0)}
-                    />
-                    <span className="plus cursor-pointer" onClick={() => handleQuantityChange(elm.id, qty + 1)}></span>
-                  </div>
+                  <p>{elm.description}</p>
                 </div>
               );
             })}
@@ -143,28 +144,28 @@ export default function BookingExtra() {
               </div>
             </div>
             <div className="mt-30 mb-120 wow fadeInUp">
-            <Link
-              className="btn btn-primary btn-primary-big w-100"
-              href="/booking-passenger"
-            >
-              Continue
-              <svg
-                className="icon-16 ml-5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
+              <Link
+                className="btn btn-primary btn-primary-big w-100"
+                href="/booking-passenger"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
-                ></path>
-              </svg>
-            </Link>
-          </div>
+                Continue
+                <svg
+                  className="icon-16 ml-5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
+                  ></path>
+                </svg>
+              </Link>
+            </div>
 
           </div>
         </div>

@@ -1,9 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useBookingStore } from "@/store/useBookingStore";
 
 export default function BookingReceived() {
+  const router = useRouter();
   const {
     pickup,
     dropoff,
@@ -18,15 +21,36 @@ export default function BookingReceived() {
     getTotalPrice
   } = useBookingStore();
 
+  // Client-only states
+  const [orderNumber, setOrderNumber] = useState("");
+  const [formattedDate, setFormattedDate] = useState("");
+
+  // Generate client-only dynamic values
+  useEffect(() => {
+    setOrderNumber(`#${Math.floor(Math.random() * 10000)}`);
+
+    if (date) {
+      setFormattedDate(
+        date.toLocaleDateString("en-GB", {
+          weekday: "short",
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        })
+      );
+    }
+
+    // Redirect to home after 5 seconds
+    const timer = setTimeout(() => {
+      router.push("/");
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [date, router]);
+
   const infoData = [
-    { id: 1, label: "Order Number", value: `#${Math.floor(Math.random() * 10000)}` },
-    {
-      id: 2,
-      label: "Date",
-      value: date
-        ? date.toLocaleDateString("en-GB", { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' })
-        : "",
-    },
+    { id: 1, label: "Order Number", value: orderNumber },
+    { id: 2, label: "Date", value: formattedDate },
     { id: 3, label: "Total", value: `€${getTotalPrice().toFixed(2)}` },
     { id: 4, label: "Payment Method", value: "Mock Payment" },
   ];
@@ -34,7 +58,7 @@ export default function BookingReceived() {
   const rideData = [
     { id: 1, topText: "Pick Up Address", bottomText: pickup?.address || "" },
     { id: 2, topText: "Drop Off Address", bottomText: dropoff?.address || "" },
-    { id: 3, topText: "Pick Up Date", bottomText: date ? date.toLocaleDateString("en-GB") : "" },
+    { id: 3, topText: "Pick Up Date", bottomText: formattedDate },
     { id: 4, topText: "Pick Up Time", bottomText: time || "" },
     { id: 5, topText: "Distance", bottomText: distance || "~ km" },
     { id: 6, topText: "Time", bottomText: duration || "~ min" },
@@ -47,7 +71,14 @@ export default function BookingReceived() {
     { id: 4, topText: "Phone", bottomText: passenger.phone || "" },
     { id: 5, topText: "Passengers", bottomText: passenger.passengers || 1 },
     { id: 6, topText: "Luggage", bottomText: passenger.luggage || 1 },
-    { id: 7, topText: "Extras", bottomText: extras.length > 0 ? extras.map(e => e.title || e.id).join(", ") : "None" },
+    {
+      id: 7,
+      topText: "Extras",
+      bottomText:
+        extras.length > 0
+          ? extras.map((e) => e.title || e.id).join(", ")
+          : "None",
+    },
   ];
 
   return (
@@ -68,10 +99,13 @@ export default function BookingReceived() {
             <p className="text-14 color-grey mb-40">
               Booking details has been sent to: {passenger.email || "booking@luxride.com"}
             </p>
+            <p className="text-14 color-grey mb-40">
+              Redirecting to home page in 5 seconds...
+            </p>
           </div>
 
           <div className="box-info-book-border wow fadeInUp">
-            {infoData.map(elm => (
+            {infoData.map((elm) => (
               <div key={elm.id} className="info-1">
                 <span className="color-text text-14">{elm.label}</span>
                 <br />
@@ -83,7 +117,7 @@ export default function BookingReceived() {
           <div className="box-booking-border wow fadeInUp">
             <h6 className="heading-20-medium color-text">Reservation Information</h6>
             <ul className="list-prices">
-              {rideData.map(elm => (
+              {rideData.map((elm) => (
                 <li key={elm.id}>
                   <span className="text-top">{elm.topText}</span>
                   <span className="text-bottom">{elm.bottomText}</span>
@@ -120,7 +154,7 @@ export default function BookingReceived() {
           <div className="box-booking-border wow fadeInUp">
             <h6 className="heading-20-medium color-text">Passenger Information</h6>
             <ul className="list-prices">
-              {personalData.map(elm => (
+              {personalData.map((elm) => (
                 <li key={elm.id}>
                   <span className="text-top">{elm.topText}</span>
                   <span className="text-bottom">{elm.bottomText}</span>

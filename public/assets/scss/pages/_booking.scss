@@ -1,9 +1,11 @@
 .box-booking-tabs {
   display: flex;
   margin: 0px -15px;
+
   .item-tab {
     width: 25%;
     padding: 0px 15px;
+
     .box-tab-step {
       width: 100%;
       padding: 30px 0px;
@@ -12,9 +14,11 @@
       justify-content: space-between;
       border-bottom: 2px solid $color-border;
       cursor: pointer;
+
       .icon-tab {
         display: flex;
         align-items: center;
+
         .icon-book {
           display: inline-block;
           height: 60px;
@@ -24,27 +28,32 @@
           border-radius: 50%;
           text-align: center;
           line-height: 60px;
+
           &.icon-vehicle {
             background-image: url(/assets/imgs/page/booking/vehicle.svg);
             background-position: center;
             background-repeat: no-repeat;
           }
+
           &.icon-extra {
             background-image: url(/assets/imgs/page/booking/extra.svg);
             background-position: center;
             background-repeat: no-repeat;
           }
+
           &.icon-pax {
             background-image: url(/assets/imgs/page/booking/pax.svg);
             background-position: center;
             background-repeat: no-repeat;
           }
+
           &.icon-payment {
             background-image: url(/assets/imgs/page/booking/payment.svg);
             background-position: center;
             background-repeat: no-repeat;
           }
         }
+
         .text-tab {
           font-size: 18px;
           line-height: 28px;
@@ -52,35 +61,34 @@
           font-weight: 500;
         }
       }
+
       &.active,
       &:hover {
         border-bottom-color: $color-text;
+
         .icon-tab {
           .icon-book {
             background-color: $color-text;
+
             &.icon-vehicle {
               background-image: url(/assets/imgs/page/booking/vehicle-hover.svg);
-              background-position: center;
-              background-repeat: no-repeat;
             }
+
             &.icon-extra {
               background-image: url(/assets/imgs/page/booking/extra-hover.svg);
-              background-position: center;
-              background-repeat: no-repeat;
             }
+
             &.icon-pax {
               background-image: url(/assets/imgs/page/booking/pax-hover.svg);
-              background-position: center;
-              background-repeat: no-repeat;
             }
+
             &.icon-payment {
               background-image: url(/assets/imgs/page/booking/payment-hover.svg);
-              background-position: center;
-              background-repeat: no-repeat;
             }
           }
         }
       }
+
       .number-tab {
         span {
           font-weight: 500;
@@ -92,19 +100,23 @@
     }
   }
 }
+
 .box-row-tab {
   display: flex;
   flex-wrap: wrap;
   margin: 0px -10px;
+
   .box-tab-left {
     padding: 0px 10px;
     width: 71%;
   }
+
   .box-tab-right {
     padding: 0px 10px;
     width: 29%;
   }
 }
+
 .sidebar {
   padding: 30px;
   border-radius: 6px;
@@ -112,6 +124,7 @@
   border: 1px solid $color-border;
   margin-bottom: 30px;
 }
+
 .list-routes {
   li {
     display: flex;
@@ -119,6 +132,7 @@
     align-items: center;
     position: relative;
     padding-bottom: 50px;
+
     .location-item {
       width: 36px;
       height: 40px;
@@ -131,9 +145,11 @@
       text-align: center;
       display: inline-block;
     }
+
     .info-location {
       position: relative;
     }
+
     &::before {
       content: "";
       position: absolute;
@@ -143,8 +159,10 @@
       width: 2px;
       background: url(/assets/imgs/page/booking/dotted.png) no-repeat center;
     }
+
     &:last-child {
       padding-bottom: 0px;
+
       &::before {
         display: none;
       }
@@ -154,12 +172,14 @@
 
 .list-icons {
   padding: 20px 0px 0px 0px;
+
   li {
     display: flex;
     width: 100%;
     align-items: center;
     position: relative;
     padding-bottom: 20px;
+
     .icon-item {
       width: 40px;
       height: 40px;
@@ -171,25 +191,30 @@
       text-align: center;
       display: inline-block;
       border-radius: 50%;
+
       &.icon-plan {
         background-image: url(/assets/imgs/page/booking/plan.png);
         background-repeat: no-repeat;
         background-position: center top 10px;
       }
+
       &.icon-time {
         background-image: url(/assets/imgs/page/booking/time.png);
         background-repeat: no-repeat;
         background-position: center;
       }
     }
+
     .info-location {
       position: relative;
     }
+
     &:last-child {
       padding-bottom: 0px;
     }
   }
 }
+
 .box-map-route {
   width: 100%;
   height: 200px;
@@ -197,270 +222,353 @@
   margin-bottom: 25px;
   border-radius: 6px;
   overflow: hidden;
+
   iframe {
     width: 100%;
     height: 100%;
   }
 }
+
 .box-info-route {
   display: flex;
   justify-content: space-between;
+
   .info-route-left {
     position: relative;
+
     span {
       display: block;
     }
   }
+
   .info-route-right {
     padding-left: 20px;
+
     span {
       display: block;
     }
   }
 }
+
 .list-ticks-small-booking {
   li {
     padding-left: 35px;
+
     &::before {
       background-image: url(/assets/imgs/page/booking/tick.png);
       background-position: center;
       background-repeat: no-repeat;
     }
+
     &:last-child {
       margin-bottom: 0px !important;
     }
   }
 }
+
 .list-vehicles {
   position: relative;
-}
-.item-vehicle {
-  border: 1px solid $color-border;
-  border-radius: 6px;
-  padding: 30px 20px;
-  display: flex;
-  align-items: center;
-  margin-bottom: 30px;
-  &:hover {
-    background-color: $background-bg-3;
-    .btn-primary {
-      background-color: $color-secondary;
-      color: $color-white;
-      svg {
-        color: $color-white;
-      }
-    }
-  }
-  .vehicle-left {
-    padding: 0px 10px;
-    position: relative;
-    width: 67%;
-    border-right: 1px solid $color-border;
-    margin-right: 20px;
-    .vehicle-image {
-      margin-bottom: 15px;
-      width: 100%;
-      text-align: center;
-      img {
-        display: block;
-      }
-    }
-    .vehicle-facilities {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      margin: 0px -10px;
-      .text-fact {
-        font-size: 14px;
-        line-height: 35px;
-        color: $color-text;
-        display: inline-block;
-        padding: 0px 10px 0px 25px;
-        width: 50%;
-        &.meet-greeting {
-          background-image: url(/assets/imgs/page/booking/meet.svg);
-          background-position: left center;
-          background-repeat: no-repeat;
-        }
-        &.free-cancel {
-          background-image: url(/assets/imgs/page/booking/cancel.svg);
-          background-position: left center;
-          background-repeat: no-repeat;
-        }
-        &.free-waiting {
-          background-image: url(/assets/imgs/page/booking/free-time.svg);
-          background-position: left center;
-          background-repeat: no-repeat;
-        }
-        &.safe-travel {
-          background-image: url(/assets/imgs/page/booking/safe.svg);
-          background-position: left center;
-          background-repeat: no-repeat;
-        }
-      }
-    }
-    .link {
-      text-decoration: underline;
-      &:hover {
-        color: $color-secondary;
-      }
-    }
-  }
-  .vehicle-right {
-    width: 33%;
-    padding: 0px 10px;
-    position: relative;
-    .vehicle-passenger-luggage {
-      display: flex;
-      justify-content: space-between;
-      .passenger {
-        display: inline-block;
-        padding: 0px 0px 0px 18px;
-        background-image: url(/assets/imgs/page/booking/passenger.svg);
-        background-position: left center;
-        background-repeat: no-repeat;
-      }
-      .luggage {
-        display: inline-block;
-        padding: 0px 0px 0px 18px;
-        background-image: url(/assets/imgs/page/booking/luggage.svg);
-        background-position: left center;
-        background-repeat: no-repeat;
-      }
-    }
-  }
-}
-.list-extras {
-  position: relative;
-  .item-extra {
+
+  .item-vehicle {
+    border: 1px solid $color-border;
+    border-radius: 6px;
+    padding: 30px 20px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    padding-bottom: 30px;
     margin-bottom: 30px;
-    border-bottom: 1px solid $color-border;
-    .extra-info {
-      span.price {
-        font-size: 14px;
-        line-height: 24px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1); // subtle shadow
+
+    &:hover {
+      background-color: $background-bg-3;
+
+      .btn-primary {
         background-color: $color-secondary;
-        display: inline-block;
-        padding: 3px 14px;
-        border-radius: 40px;
         color: $color-white;
-        vertical-align: middle;
-        margin-left: 10px;
-      }
-    }
-    .extra-quantity {
-      position: relative;
-      max-width: 130px;
-      width: 100%;
-      min-width: 130px;
-      span.minus {
-        position: absolute;
-        left: 0px;
-        top: 0px;
-        height: 40px;
-        width: 40px;
-        border: 1px solid $color-border;
-        border-radius: 50%;
-        background: $background-white url(/assets/imgs/page/booking/minus.svg)
-          no-repeat center;
-        cursor: pointer;
-        &:hover {
-          border-color: $color-text;
-          background-color: $background-bg-4;
+
+        svg {
+          color: $color-white;
         }
       }
-      input.form-control {
-        border: 0px;
+    }
+
+    .vehicle-left {
+      width: 65%;
+      padding: 0 2%;
+      border-right: 1px solid $color-border;
+      margin-right: 2%;
+
+      .vehicle-image img {
         width: 100%;
-        text-align: center;
-        padding: 0px;
-        height: 40px;
-        color: $color-text;
-        font-size: 16px;
-        line-height: 24px;
-        font-weight: 500;
-        background-color: $background-white;
-        min-height: 40px;
+        height: auto;
       }
-      span.plus {
-        position: absolute;
-        right: 0px;
-        top: 0px;
-        height: 40px;
-        width: 40px;
-        border: 1px solid $color-border;
-        border-radius: 50%;
-        background: $background-white url(/assets/imgs/page/booking/plus.svg)
-          no-repeat center;
-        cursor: pointer;
+
+      .vehicle-facilities {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin: 0;
+        gap: 5px;
+
+        .text-fact {
+          font-size: 14px;
+          line-height: 25px;
+          color: $color-text;
+          display: block;
+          padding-left: 25px;
+          width: 100%;
+
+          &.meet-greeting {
+            background-image: url(/assets/imgs/page/booking/meet.svg);
+            background-position: left center;
+            background-repeat: no-repeat;
+          }
+
+          &.free-cancel {
+            background-image: url(/assets/imgs/page/booking/cancel.svg);
+            background-position: left center;
+            background-repeat: no-repeat;
+          }
+
+          &.free-waiting {
+            background-image: url(/assets/imgs/page/booking/free-time.svg);
+            background-position: left center;
+            background-repeat: no-repeat;
+          }
+
+          &.safe-travel {
+            background-image: url(/assets/imgs/page/booking/safe.svg);
+            background-position: left center;
+            background-repeat: no-repeat;
+          }
+        }
+      }
+
+      .link {
+        text-decoration: underline;
+
         &:hover {
-          border-color: $color-text;
-          background-color: $background-bg-4;
+          color: $color-secondary;
+        }
+      }
+    }
+
+    .vehicle-right {
+      width: 33%;
+      padding: 0 2%;
+      position: relative;
+
+      .vehicle-passenger-luggage {
+        display: flex;
+
+        .passenger {
+          display: inline-block;
+          padding: 0px 0px 0px 18px;
+          background-image: url(/assets/imgs/page/booking/passenger.svg);
+          background-position: left center;
+          background-repeat: no-repeat;
+        }
+
+        .luggage {
+          display: inline-block;
+          padding: 0px 0px 0px 18px;
+          background-image: url(/assets/imgs/page/booking/luggage.svg);
+          background-position: left center;
+          background-repeat: no-repeat;
         }
       }
     }
   }
 }
-.sidebar .list-prices li span.price {
-  min-width: 92px;
-  max-width: 92px;
-  text-align: right;
-}
-.list-prices-2 {
-  li {
-    border-bottom: 0px;
-    padding-bottom: 5px;
-    padding-top: 5px;
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .box-booking-tabs {
+    flex-direction: column;
+    margin: 0 auto;
+    gap: 3%;
   }
-}
-.box-content-detail {
-  padding-right: 40px;
-  select.form-control {
-    -webkit-appearance: revert;
-    -moz-appearance: revert;
-    appearance: revert;
-    padding-top: 0px;
-    padding-bottom: 0px;
+
+  .box-booking-tabs .item-tab {
+    width: 90% !important;
+    margin: 0 auto;
+    padding: 2% 0;
   }
-}
-.box-completed-booking {
-  max-width: 740px;
-  margin: auto;
-  padding: 120px 0px 90px 0px;
-}
-.box-booking-border {
-  border-radius: 6px;
-  border: 1px solid $color-border;
-  padding: 50px;
-  margin-bottom: 30px;
-}
-.box-info-book-border {
-  padding: 40px 20px;
-  border: 1px dashed $color-text;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  background-color: $background-bg-4;
-  margin-bottom: 30px;
-  .info-1 {
-    width: 25%;
-    padding: 0px 10px;
+
+  .box-booking-tabs .box-tab-step {
+    padding: 4% 3%;
+    flex-direction: row;
+    justify-content: flex-start;
+    border-bottom-width: 0.3%;
+    gap: 3%;
   }
-}
-.cb-agree,
-.cb-subscriber {
-  float: left;
-  margin: 2px 10px 0px 0px;
-}
-.list-prices {
-  li {
-    .text-top {
-      min-width: 140px;
-      display: inline-block;
+
+  .box-booking-tabs .icon-tab {
+    flex-direction: row;
+    align-items: center;
+    gap: 3%;
+  }
+
+  .box-booking-tabs .icon-book {
+    width: 12%;
+    padding-bottom: 12%;
+    margin-right: 3%;
+    line-height: 1;
+    font-size: 80%;
+  }
+
+  .box-booking-tabs .text-tab {
+    font-size: 90%;
+    line-height: 1.4;
+  }
+
+  .box-booking-tabs .number-tab span {
+    font-size: 120%;
+    line-height: 1.5;
+  }
+
+  .box-row-tab {
+    flex-direction: column;
+    margin: 0 auto;
+    gap: 3%;
+  }
+
+  .box-row-tab .box-tab-left,
+  .box-row-tab .box-tab-right {
+    width: 100% !important;
+    padding: 2% 3%;
+    margin-bottom: 3%;
+  }
+
+  .item-vehicle {
+    flex-wrap: nowrap;
+    padding: 3% 2%;
+  }
+
+  .item-vehicle .vehicle-left {
+    width: 65%;
+    margin-right: 1%;
+  }
+
+  .item-vehicle .vehicle-right {
+    width: 33%;
+  }
+
+  .vehicle-facilities .text-fact {
+    font-size: 13px;
+    line-height: 20px;
+  }
+
+  /* Mobile stacking for item-vehicle */
+  .item-vehicle {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px 10px;
+
+    .vehicle-left,
+    .vehicle-right {
+      width: 100% !important;
+      border: none;
+      margin: 0;
+      padding: 0;
     }
+
+    .vehicle-right {
+
+      h5,
+      p,
+      .vehicle-price,
+      .price-desc,
+      .btn {
+        margin: 10px 0;
+      }
+
+      .vehicle-passenger-luggage {
+        justify-content: center;
+        margin-bottom: 15px;
+      }
+    }
+
+    .vehicle-left {
+
+      h5,
+
+      .vehicle-image {
+        img {
+          max-width: 75%;
+          height: auto;
+        }
+      }
+
+      .vehicle-facilities {
+        display: flex;
+        flex-direction: column;
+        align-items: center; // center stack
+        gap: 3px; // smaller gap
+        margin-bottom: 10px; // reduce margin
+
+        .text-fact {
+          font-size: 11px; // smaller font
+          line-height: 14px; // tighter line spacing
+          text-align: center;
+          padding: 0;
+          width: auto;
+        }
+      }
+
+    }
+
+    .btn {
+      width: 80%;
+    }
+  }
+}
+
+@media (max-width: 450px) {
+  .box-booking-tabs {
+    width: 95%;
+    gap: 2%;
+  }
+
+  .box-booking-tabs .item-tab {
+    width: 95%;
+  }
+
+  .box-booking-tabs .box-tab-step {
+    padding: 3% 2%;
+    gap: 2%;
+  }
+
+  .box-booking-tabs .icon-book {
+    width: 14%;
+    padding-bottom: 14%;
+  }
+
+  .box-booking-tabs .text-tab {
+    font-size: 85%;
+  }
+
+  .box-row-tab .box-tab-left,
+  .box-row-tab .box-tab-right {
+    padding: 3% 4%;
+  }
+
+  .item-vehicle {
+    flex-wrap: nowrap;
+    padding: 4% 3%;
+  }
+
+  .item-vehicle .vehicle-left {
+    width: 60%;
+  }
+
+  .item-vehicle .vehicle-right {
+    width: 38%;
+  }
+
+  .vehicle-facilities .text-fact {
+    font-size: 11px;
+    line-height: 18px;
   }
 }
