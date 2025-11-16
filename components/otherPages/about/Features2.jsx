@@ -1,4 +1,4 @@
-import { features5 } from "@/data/features";
+import { features2 } from "@/data/features";
 import Image from "next/image";
 
 export default function Features2() {
@@ -10,7 +10,7 @@ export default function Features2() {
             Make Your Trip Your Way With Us
           </h3>
           <ul className="list-the-trip wow fadeInUp">
-            {features5.map((elm, i) => (
+            {features2.map((elm, i) => (
               <li key={i}>
                 <div className="cardImage">
                   <Image width={56} height={56} src={elm.src} alt="luxride" />
