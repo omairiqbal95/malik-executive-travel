@@ -97,7 +97,6 @@ export default function Process() {
   const options2 = {
     slidesToShow: 3,
     slidesToScroll: 1,
-    // asNavFor: nav1, // Set this directly in the Slider component props below
     dots: false,
     arrows: false,
     focusOnSelect: true,

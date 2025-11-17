@@ -73,6 +73,7 @@ export const useBookingStore = create((set, get) => ({
   extras: [],
   extrasData: null,
   passenger: { firstName: '', lastName: '', email: '', phone: '', passengers: 1, luggage: 1 },
+  notes: '',
   distance: "~",
   duration: "~",
   setDate: (date) => set({ date }),
@@ -90,6 +91,7 @@ export const useBookingStore = create((set, get) => ({
       return { extras: [...state.extras, { id, ...data }] };
     }
   }),
+  setNotes: (notes) => set({ notes }),
   removeExtra: (id) => set((state) => ({ extras: state.extras.filter(e => e.id !== id) })),
   setExtrasData: (data) => set({ extrasData: data }),
   setPassenger: (field, value) => set((state) => ({ passenger: { ...state.passenger, [field]: value } })),

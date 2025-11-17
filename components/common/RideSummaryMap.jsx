@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { GoogleMap, DirectionsRenderer, useJsApiLoader } from "@react-google-maps/api";
 import { useBookingStore } from "@/store/useBookingStore";
 
-const containerStyle = { width: "100%", height: "300px" };
+const containerStyle = { width: "400px", height: "400px" };
 const DEFAULT_PICKUP = { lat: 41.3851, lng: 2.1734 };
 const DEFAULT_DROPOFF = { lat: 41.4036, lng: 2.1744 };
 

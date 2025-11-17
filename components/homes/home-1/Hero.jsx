@@ -6,9 +6,9 @@ import TimePickerComponent from "@/components/common/TimePicker";
 import Image from "next/image";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import Link from "next/link";
 import { useBookingStore } from "@/store/useBookingStore";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const settings = {
   slidesPerView: 1,
@@ -41,10 +41,34 @@ const banners = [
   { id: 10, url: "/assets/imgs/page/homepage1/banner5.png", title: "Event & Wedding Transport", text: "Make Your Special Day Memorable" },
 ];
 
+
 export default function Hero() {
+  const router = useRouter();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const { date, time, pickup, dropoff, setDate, setTime, setPickup, setDropoff } = useBookingStore();
+
+  const handleDateChange = (dateObject) => {
+    if (!dateObject) return setDate(null);
+    setDate(dateObject.toDate());
+  };
+
+  const handleTimeChange = (newTime) => setTime(newTime);
+  const handleFromChange = (location) => setPickup(location);
+  const handleToChange = (location) => setDropoff(location);
+
+  const canBook =
+    date !== null &&
+    time !== null &&
+    pickup?.address?.trim() !== '' &&
+    dropoff?.address?.trim() !== '';
+
+  const handleBookNow = () => {
+    if (!canBook) return; // just in case
+    router.push("/booking-vehicle");
+  };
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -64,19 +88,8 @@ export default function Hero() {
       }
     };
 
-    //fetchBookings();
+    // fetchBookings();
   }, []);
-
-  const { date, time, pickup, dropoff, setDate, setTime, setPickup, setDropoff } = useBookingStore();
-
-  const handleDateChange = (dateObject) => {
-    if (!dateObject) return setDate(null);
-    setDate(dateObject.toDate());
-  };
-
-  const handleTimeChange = (newTime) => setTime(newTime);
-  const handleFromChange = (location) => setPickup(location);
-  const handleToChange = (location) => setDropoff(location);
 
   return (
     <section className="section banner-home1">
@@ -111,7 +124,7 @@ export default function Hero() {
       </div>
 
       <div className="box-search-ride wow fadeInUp">
-        
+
         {error && <p className="text-red-500">Error: {error}</p>}
 
         <div className="search-item search-date">
@@ -147,12 +160,24 @@ export default function Hero() {
         </div>
 
         <div className="search-item search-button">
-          <Link href="/booking-vehicle">
-            <button className="btn btn-search" type="button">
-              <Image width={20} height={20} src="/assets/imgs/template/icons/search.svg" alt="Search" />
-              Book now
-            </button>
-          </Link>
+          <button
+            className="btn btn-search"
+            type="button"
+            onClick={handleBookNow}
+            disabled={!canBook}
+            style={{
+              cursor: !canBook ? "not-allowed" : "pointer",
+              opacity: !canBook ? 0.6 : 1,
+            }}
+          >
+            <Image
+              width={20}
+              height={20}
+              src="/assets/imgs/template/icons/search.svg"
+              alt="Search"
+            />
+            Book now
+          </button>
         </div>
       </div>
     </section>

@@ -108,12 +108,12 @@
 
   .box-tab-left {
     padding: 0px 10px;
-    width: 71%;
+    width: 60%;
   }
 
   .box-tab-right {
     padding: 0px 10px;
-    width: 29%;
+    width: 40%;
   }
 }
 
@@ -216,16 +216,15 @@
 }
 
 .box-map-route {
+  height: 100%;
   width: 100%;
-  height: 200px;
   margin-top: 30px;
-  margin-bottom: 25px;
   border-radius: 6px;
   overflow: hidden;
 
   iframe {
-    width: 100%;
-    height: 100%;
+    width: 90%;
+    height: 90%;
   }
 }
 

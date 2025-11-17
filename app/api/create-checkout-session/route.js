@@ -29,7 +29,7 @@ export async function POST(req) {
       ],
       mode: "payment",
       success_url: `${req.headers.get("origin")}/booking-receved`,
-      cancel_url: `${req.headers.get("origin")}/cancel`,
+      cancel_url: `${req.headers.get("origin")}/`,
       customer_email: passenger.email,
       metadata: {
         pickup: pickup.address,

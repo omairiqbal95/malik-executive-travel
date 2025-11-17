@@ -5,6 +5,8 @@ import { extras as extrasData, features } from "@/data/cars";
 import { useBookingStore } from "@/store/useBookingStore";
 import { GoogleMap, DirectionsRenderer, useJsApiLoader } from "@react-google-maps/api";
 import Link from "next/link";
+
+
 const containerStyle = { width: "100%", height: "300px" };
 const DEFAULT_PICKUP = { lat: 41.3851, lng: 2.1734 };
 const DEFAULT_DROPOFF = { lat: 41.4036, lng: 2.1744 };
@@ -25,6 +27,8 @@ export default function BookingExtra() {
   const setDuration = useBookingStore(state => state.setDuration);
   const setExtrasData = useBookingStore(state => state.setExtrasData);
   const getBasePrice = useBookingStore(state => state.getBasePrice);
+  const notes = useBookingStore(state => state.notes);
+  const setNotes = useBookingStore(state => state.setNotes);
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
@@ -75,18 +79,16 @@ export default function BookingExtra() {
           <form className="form-contact form-comment wow fadeInUp" onSubmit={e => e.preventDefault()}>
             <div className="row">
               <div className="col-lg-12">
-                <div className="form-group">
-                  <label className="form-label" htmlFor="flight">Flight/train number</label>
+                <div className="form-group floating-label">
                   <input
-                    className="form-control"
-                    id="flight"
                     type="text"
+                    id="flight"
+                    className="form-control"
                     value={flightNumber}
                     onChange={e => setFlightNumber(e.target.value)}
                     placeholder=""
-                    onFocus={e => (e.target.placeholder = "")}
-                    onBlur={e => { if (!flightNumber) e.target.placeholder = ""; }}
                   />
+                  <label className="form-label">Flight/train number</label>
                 </div>
               </div>
             </div>
@@ -126,17 +128,16 @@ export default function BookingExtra() {
                 <form onSubmit={(e) => e.preventDefault()}>
                   <div className="row">
                     <div className="col-lg-12">
-                      <div className="form-group">
-                        <label className="form-label" htmlFor="notes">
-                          Notes for the chauffeur
-                        </label>
+                      <div className="form-group floating-label">
                         <textarea
-                          defaultValue={``}
-                          className="form-control"
                           id="notes"
+                          className="form-control"
                           rows="5"
-                          placeholder=""
+                          placeholder=" "
+                          value={notes}
+                          onChange={e => setNotes(e.target.value)}
                         ></textarea>
+                        <label htmlFor="notes">Notes for the chauffeur</label>
                       </div>
                     </div>
                   </div>

@@ -1,59 +1,59 @@
 "use client";
+
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useBookingStore } from "@/store/useBookingStore";
+
 const tabs = [
-  {
-    id: 1,
-    href: "/booking-vehicle",
-    iconClass: "icon-book icon-vehicle",
-    text: "Vehicle",
-    number: "01",
-  },
-  {
-    id: 2,
-    href: "/booking-extra",
-    iconClass: "icon-book icon-extra",
-    text: "Extras",
-    number: "02",
-  },
-  {
-    id: 3,
-    href: "/booking-passenger",
-    iconClass: "icon-book icon-pax",
-    text: "Details",
-    number: "03",
-  }
+  { id: 1, href: "/booking-vehicle", iconClass: "icon-book icon-vehicle", text: "Vehicle" },
+  { id: 2, href: "/booking-extra", iconClass: "icon-book icon-extra", text: "Extras" },
+  { id: 3, href: "/booking-passenger", iconClass: "icon-book icon-pax", text: "Details" },
 ];
 
 export default function BookingTab() {
-  const [activePathIndex, setactivePathIndex] = useState(0);
   const pathname = usePathname();
+  const [activePathIndex, setActivePathIndex] = useState(0);
+  const { selectedVehicle } = useBookingStore();
+
   useEffect(() => {
-    const activeTab = tabs.filter((elm) => elm.href == pathname)[0];
-    const activeTabIndex = tabs.indexOf(activeTab);
-    setactivePathIndex(activeTabIndex);
+    const activeTab = tabs.find((elm) => elm.href === pathname);
+    setActivePathIndex(tabs.indexOf(activeTab));
   }, [pathname]);
 
   return (
     <div className="box-booking-tabs">
-      {tabs.map((elm, i) => (
-        <div key={i} className="item-tab wow fadeInUp">
-          <Link href={elm.href}>
-            <div
-              className={`box-tab-step ${activePathIndex >= i ? "active" : ""}`}
-            >
-              <div className="icon-tab">
-                <span className={elm.iconClass}> </span>
-                <span className="text-tab">{elm.text} </span>
+      {tabs.map((tab, i) => {
+        // Disable tab if it's forward step and requirements are not met
+        const disabled = (i === 1 && !selectedVehicle) || (i > 1 && !selectedVehicle);
+        return (
+          <div key={i} className="item-tab wow fadeInUp">
+            {disabled ? (
+              <div className={`box-tab-step ${activePathIndex >= i ? "active" : ""}`} style={{ cursor: "not-allowed", opacity: 0.5 }}>
+                <div className="icon-tab">
+                  <span className={tab.iconClass}></span>
+                  <span className="text-tab">{tab.text}</span>
+                </div>
+                <div className="number-tab">
+                  <span>0{i + 1}</span>
+                </div>
               </div>
-              <div className="number-tab">
-                <span>0{i + 1}</span>
-              </div>
-            </div>
-          </Link>
-        </div>
-      ))}
+            ) : (
+              <Link href={tab.href}>
+                <div className={`box-tab-step ${activePathIndex >= i ? "active" : ""}`}>
+                  <div className="icon-tab">
+                    <span className={tab.iconClass}></span>
+                    <span className="text-tab">{tab.text}</span>
+                  </div>
+                  <div className="number-tab">
+                    <span>0{i + 1}</span>
+                  </div>
+                </div>
+              </Link>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }

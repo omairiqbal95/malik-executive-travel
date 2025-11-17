@@ -306,85 +306,87 @@
   list-style: none;
   padding: 0px;
   margin: 0px;
+  max-height: 500px;
 
   .slick-list {
-    .slick-track {
-      li {
-        padding-bottom: 60px;
-        position: relative;
-        padding-left: 50px;
-        cursor: pointer;
+  .slick-track {
+    li {
+      position: relative;
+      padding-left: 50px; // keep horizontal padding
+      cursor: pointer;
+      
+      .line-white {
+        display: none;
+        height: 56px;
+        width: 3px;
+        position: absolute;
+        top: 36px;
+        border-radius: 60px;
+        background-color: $background-white;
+        left: 8px;
+      }
 
-        .line-white {
-          display: none;
-          height: 56px;
-          width: 3px;
-          position: absolute;
-          top: 36px;
-          border-radius: 60px;
-          background-color: $background-white;
-          left: 8px;
-        }
+      &::before {
+        content: "";
+        height: 20px;
+        width: 20px;
+        border: 1px solid $color-white;
+        border-radius: 50%;
+        opacity: 0.6;
+        position: absolute;
+        top: 6px;
+        left: 0px;
+      }
 
+      &::after {
+        content: "";
+        bottom: 4px;
+        width: 3px;
+        opacity: 0.2;
+        position: absolute;
+        top: 36px;
+        background-color: $background-white;
+        left: 8px;
+        border-radius: 60px;
+      }
+
+      h4,
+      p {
+        color: $color-white;
+        opacity: 0.6;
+        margin-bottom: 8px; // instead of li padding
+      }
+
+      &.slick-current {
         &::before {
-          content: "";
-          height: 20px;
-          width: 20px;
-          border: 1px solid $color-white;
-          border-radius: 50%;
-          opacity: 0.6;
-          position: absolute;
-          top: 6px;
-          left: 0px;
-        }
-
-        &::after {
-          content: "";
-          bottom: 4px;
-          width: 3px;
-          opacity: 0.2;
-          position: absolute;
-          top: 36px;
-          background-color: $background-white;
-          left: 8px;
-          border-radius: 60px;
+          opacity: 1;
         }
 
         h4,
         p {
-          color: $color-white;
-          opacity: 0.6;
+          opacity: 1;
         }
 
-        &.slick-current {
-          &::before {
-            opacity: 1;
-          }
+        .line-white {
+          display: block;
+        }
+      }
 
-          h4,
-          p {
-            opacity: 1;
+      &.slick-active {
+        &:last-child {
+          &::after {
+            display: none;
           }
 
           .line-white {
-            display: block;
-          }
-        }
-
-        &.slick-active {
-          &:last-child {
-            &::after {
-              display: none;
-            }
-
-            .line-white {
-              display: none;
-            }
+            display: none;
           }
         }
       }
     }
   }
+}
+
 }
 
 .box-main-slider {

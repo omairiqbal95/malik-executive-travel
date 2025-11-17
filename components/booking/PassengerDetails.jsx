@@ -3,6 +3,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { features } from "@/data/cars";
 import { useBookingStore } from "@/store/useBookingStore";
+import { GoogleMap, DirectionsRenderer, useJsApiLoader } from "@react-google-maps/api";
+
+const containerStyle = { width: "100%", height: "250px" }; // map size
+const DEFAULT_PICKUP = { lat: 41.3851, lng: 2.1734 };
+const DEFAULT_DROPOFF = { lat: 41.4036, lng: 2.1744 };
 
 export default function PassengerDetails() {
   const bookingState = useBookingStore();
@@ -16,15 +21,39 @@ export default function PassengerDetails() {
     setPassenger,
     getBasePrice,
     getTotalPrice,
-    extras = []
+    extras = [],
+    setDistance,
+    setDuration,
+    distance,
+    duration
   } = bookingState;
 
   const [loading, setLoading] = useState(false);
+  const [directions, setDirections] = useState(null);
+
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+  });
+
+  // Form validation
+  const isFormValid =
+    passenger.firstName?.trim() &&
+    passenger.lastName?.trim() &&
+    passenger.email?.trim() &&
+    passenger.phone?.trim() &&
+    passenger.passengers > 0 &&
+    passenger.luggage > 0 &&
+    pickup?.address?.trim() &&
+    dropoff?.address?.trim() &&
+    date &&
+    time &&
+    selectedVehicle;
 
   // Handle Stripe checkout
   const handlePayment = async () => {
+    if (!isFormValid) return;
+
     try {
-      // Ensure passenger object fields are initialized
       setPassenger('firstName', passenger.firstName || "");
       setPassenger('lastName', passenger.lastName || "");
       setPassenger('email', passenger.email || "");
@@ -33,15 +62,6 @@ export default function PassengerDetails() {
       setPassenger('luggage', passenger.luggage || 1);
 
       setLoading(true);
-
-      console.log("Store before payment:", {
-        pickup,
-        dropoff,
-        selectedVehicle,
-        passenger,
-        extras,
-        total: getTotalPrice()
-      });
 
       const response = await fetch("/api/create-checkout-session", {
         method: "POST",
@@ -59,14 +79,36 @@ export default function PassengerDetails() {
       });
 
       const data = await response.json();
-      if (data.url) {
-        window.location.href = data.url; // redirect to Stripe Checkout
-      }
+      if (data.url) window.location.href = data.url;
     } catch (err) {
       console.error("Stripe checkout error:", err);
       setLoading(false);
     }
   };
+
+  // Map directions
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    const origin = pickup?.lat && pickup?.lng ? pickup : DEFAULT_PICKUP;
+    const destination = dropoff?.lat && dropoff?.lng ? dropoff : DEFAULT_DROPOFF;
+    const directionsService = new window.google.maps.DirectionsService();
+
+    directionsService.route(
+      { origin, destination, travelMode: window.google.maps.TravelMode.DRIVING },
+      (result, status) => {
+        if (status === "OK" && result) {
+          setDirections(result);
+          const leg = result.routes[0].legs[0];
+          setDistance(leg.distance.text);
+          setDuration(leg.duration.text);
+        } else {
+          setDistance("~");
+          setDuration("~");
+        }
+      }
+    );
+  }, [pickup, dropoff, isLoaded, setDistance, setDuration]);
 
   // Form focus/blur effects
   useEffect(() => {
@@ -213,15 +255,21 @@ export default function PassengerDetails() {
             <button
               className="btn btn-primary btn-primary-big w-100"
               onClick={handlePayment}
-              disabled={loading}
+              disabled={loading || !isFormValid}
             >
               {loading ? "Processing..." : "Continue to Payment"}
             </button>
+
+            {!isFormValid && !loading && (
+              <p className="text-red-500 mt-2 text-sm">
+                Please fill in all required fields to continue.
+              </p>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Right Panel: Sidebar with Ride Summary & Total */}
+      {/* Right Panel: Ride Summary & Map */}
       <div className="box-tab-right lg:w-1/2 flex flex-col gap-4">
         <div className="sidebar wow fadeInUp">
           <h6 className="text-20-medium color-text mb-4">Ride Summary</h6>
@@ -268,6 +316,22 @@ export default function PassengerDetails() {
               <div className="flex justify-between border-t border-gray-300 pt-2 mt-2 font-semibold text-lg">
                 <span>Total</span>
                 <span className="text-gray-900">€{getTotalPrice().toFixed(2)}</span>
+              </div>
+            </div>
+          )}
+
+          {isLoaded && (
+            <div className="rounded overflow-hidden mb-4">
+              <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={pickup?.lat && pickup?.lng ? pickup : DEFAULT_PICKUP}
+                zoom={13}
+              >
+                {directions && <DirectionsRenderer directions={directions} />}
+              </GoogleMap>
+              <div className="flex justify-between text-sm mt-2">
+                <span>Distance: {distance || "~"}</span>
+                <span>Time: {duration || "~"}</span>
               </div>
             </div>
           )}

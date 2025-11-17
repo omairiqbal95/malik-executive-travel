@@ -65,7 +65,6 @@ export default function TimePickerComponent({ value, onChange }) {
           border: '0px solid #ddd',
           borderRadius: '4px',
           padding: '0 10px',
-          background: '#fff',
           fontSize: '14px',
           color: '#333',
           cursor: 'pointer',

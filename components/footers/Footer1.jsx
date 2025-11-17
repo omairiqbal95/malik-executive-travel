@@ -1,11 +1,10 @@
 import Link from "next/link";
 
-
 export const links1 = [
   { id: 1, text: "About us", href: "/about" },
   { id: 2, text: "Our Fleet", href: "/fleet-list" },
-  { id: 4, text: "Our Team", href: "/our-team" },
-  { id: 5, text: "Contact", href: "/contact" },
+  { id: 3, text: "Our Team", href: "/our-team" },
+  { id: 4, text: "Contact", href: "/contact" },
 ];
 
 export const links2 = [
@@ -46,9 +45,8 @@ export default function Footer1() {
         <div className="container-sub">
           <div className="box-footer-top">
             <div className="row align-items-center">
-              <div className="col-lg-6 col-md-6 text-md-start text-center mb-15 wow fadeInUp">
+              <div className="col-lg-6 col-md-6 text-md-start text-center mb-15">
                 <div className="d-flex align-items-center justify-content-md-start justify-content-center">
-                  
                   <a
                     className="text-14-medium call-phone color-white hover-up"
                     href="tel:+41227157000"
@@ -59,12 +57,11 @@ export default function Footer1() {
               </div>
             </div>
           </div>
+
           <div className="row mb-40">
             <div className="col-lg-3 width-20">
-              <h5 className="text-18-medium color-white mb-20 wow fadeInUp">
-                Company
-              </h5>
-              <ul className="menu-footer wow fadeInUp">
+              <h5 className="text-18-medium color-white mb-20">Company</h5>
+              <ul className="menu-footer">
                 {links1.map((elm, i) => (
                   <li key={i}>
                     <Link href={elm.href}>{elm.text}</Link>
@@ -72,11 +69,10 @@ export default function Footer1() {
                 ))}
               </ul>
             </div>
+
             <div className="col-lg-3 width-20 mb-30">
-              <h5 className="text-18-medium color-white mb-20 wow fadeInUp">
-                Top cities
-              </h5>
-              <ul className="menu-footer wow fadeInUp">
+              <h5 className="text-18-medium color-white mb-20">Top cities</h5>
+              <ul className="menu-footer">
                 {links2.map((elm, i) => (
                   <li key={i}>
                     <a href={elm.href}>{elm.name}</a>
@@ -84,11 +80,10 @@ export default function Footer1() {
                 ))}
               </ul>
             </div>
+
             <div className="col-lg-3 width-20 mb-30">
-              <h5 className="text-18-medium color-white mb-20 wow fadeInUp">
-                Services
-              </h5>
-              <ul className="menu-footer wow fadeInUp">
+              <h5 className="text-18-medium color-white mb-20">Services</h5>
+              <ul className="menu-footer">
                 {links3.map((elm, i) => (
                   <li key={i}>
                     <a href={elm.href}>{elm.name}</a>
@@ -96,11 +91,10 @@ export default function Footer1() {
                 ))}
               </ul>
             </div>
+
             <div className="col-lg-3 width-20 mb-30">
-              <h5 className="text-18-medium color-white mb-20 wow fadeInUp">
-                Cars
-              </h5>
-              <ul className="menu-footer wow fadeInUp">
+              <h5 className="text-18-medium color-white mb-20">Cars</h5>
+              <ul className="menu-footer">
                 {links4.map((elm, i) => (
                   <li key={i}>
                     <a href={elm.href}>{elm.name}</a>
@@ -111,6 +105,7 @@ export default function Footer1() {
           </div>
         </div>
       </div>
+
       <div className="footer-2">
         <div className="container-sub">
           <div className="footer-bottom">
@@ -127,6 +122,7 @@ export default function Footer1() {
                   ))}
                 </ul>
               </div>
+
               <div className="col-lg-4 col-md-12 text-center text-lg-end">
                 <a className="btn btn-link-location" href="#">
                   Barcelona
